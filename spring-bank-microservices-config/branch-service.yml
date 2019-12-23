@@ -10,9 +10,9 @@ spring:
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
         ddl-auto: update
   application:
-    name: spring-bank-customers-service-eureka-client
+    name: spring-bank-branch-service-eureka-client
 server:
-  port: 8090
+  port: 8070
 eureka:
   client:
     serviceUrl:
