@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 	<description>Spring Bank Config Server</description>
 
-    <version>2.1.4</version>
+    <version>2.2.1</version>
 
     <properties>
         <docker.image.exposed.port>8888</docker.image.exposed.port>
@@ -21,12 +21,12 @@
 
 	<dependencies>
         <!-- Spring Boot -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
 			<version>${spring-boot.version}</version>
             <scope>test</scope>
-        </dependency>-->
+        </dependency>
 
         <!-- Spring Cloud -->
 		<dependency>
