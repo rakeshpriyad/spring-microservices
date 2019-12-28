@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.test.bank.api.gateway</groupId>
-    <artifactId>spring-bank-api-gateway-without-discovery</artifactId>
+    <artifactId>spring-bank-api-gateway-with-discovery</artifactId>
     <packaging>jar</packaging>
     <description>Spring Bank API Gateway</description>
 	<version>2.2.1</version>
