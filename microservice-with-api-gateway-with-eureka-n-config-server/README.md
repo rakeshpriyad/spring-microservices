@@ -12,8 +12,8 @@ Accessing Eureka/discovery server:
 http://localhost:8761/
 
 Following url : to fetch branch-service-eureka-client and customers-service-eureka-client through Apigateway
-http://localhost:8080/api/branch-service-eureka-client/branch
+http://localhost:8080/api/bank-branch-service-eureka-client-n-config-server/branch
 
-http://localhost:8080/api/customers-service-eureka-client/account
 
+http://localhost:8080/api/bank-customers-service-eureka-client-n-config-server/account
 
