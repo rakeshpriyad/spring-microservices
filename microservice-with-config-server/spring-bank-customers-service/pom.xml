@@ -61,11 +61,11 @@
             <artifactId>spring-cloud-starter-sleuth</artifactId>
 			<version>${spring-cloud.version}</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-sleuth-zipkin</artifactId>
 			<version>${spring-cloud.version}</version>
-        </dependency>
+        </dependency>-->
 
         <!-- Third parties -->
         <dependency>
@@ -116,19 +116,12 @@
             <version>2.8.5</version>
         </dependency>
 	</dependencies>
-
-    <!--<profiles>
-        <profile>
-            <id>buildDocker</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.spotify</groupId>
-                        <artifactId>docker-maven-plugin</artifactId>
-                        <version>${docker.plugin.version}</version>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
