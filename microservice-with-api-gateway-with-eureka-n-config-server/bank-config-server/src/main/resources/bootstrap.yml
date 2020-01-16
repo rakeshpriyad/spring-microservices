@@ -1,0 +1,24 @@
+#server.port: 8888
+server:
+  port : 8888
+spring:
+  application:
+    name: bank-config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/rakeshpriyad/config-bank-microservices-with-api-gateway-with-eureka-n-config-server.git
+
+  eureka:
+    client:
+      register-with-eureka: false
+      fetch-registry: false
+---
+spring:
+  profiles: local
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///${GIT_REPO}

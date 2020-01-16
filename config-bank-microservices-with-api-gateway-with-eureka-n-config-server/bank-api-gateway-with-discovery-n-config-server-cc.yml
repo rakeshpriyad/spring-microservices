@@ -1,0 +1,39 @@
+#zuul:
+#  prefix: /api
+#  ignoredServices: '*'
+#  routes:
+#    bank-branch-service-eureka-client-n-config-server: /branches/**
+#    bank-customers-service-eureka-client-n-config-server: /customers/**
+
+# To enable eureka client
+eureka:
+  client:
+    eureka-server-port: 8761
+    register-with-eureka: true
+    fetch-registry: true
+
+ 
+logging:
+  pattern: 
+    console: "%d{yyyy-MM-dd HH:mm:ss} ${LOG_LEVEL_PATTERN:-%5p} %m%n"
+	
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+      - id: bank-branch-service-eureka-client-n-config-server
+        uri: lb://bank-branch-service-eureka-client-n-config-server
+        predicates:
+        - Path=/branches/**
+        filters:
+        - RewritePath=/branches/(?<path>.*), /$\{path}
+      - id: bank-customers-service-eureka-client-n-config-server
+        uri: lb://bank-customers-service-eureka-client-n-config-server
+        predicates:
+        - Path=/customers/**
+        filters:
+        - RewritePath=/customers/(?<path>.*), /$\{path}
+    

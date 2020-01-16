@@ -1,0 +1,18 @@
+zuul:
+  routes:
+    bank-branch-service-eureka-client-n-config-server:
+      path: /api/bank-branch-service-eureka-client-n-config-server/**
+      serviceId: bank-branch-service-eureka-client-n-config-server
+      #url: http://localhost:8070
+
+    bank-customers-service-eureka-client-n-config-server:
+      path: /api/bank-customers-service-eureka-client-n-config-server/**
+      serviceId: bank-customers-service-eureka-client-n-config-server
+      #url: http://localhost:8090
+
+# To disable eureka client
+eureka:
+  client:
+    eureka-server-port: 8761
+    register-with-eureka: true
+    fetch-registry: true

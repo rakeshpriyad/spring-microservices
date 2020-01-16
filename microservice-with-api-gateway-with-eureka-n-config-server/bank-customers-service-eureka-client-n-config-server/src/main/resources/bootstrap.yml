@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: bank-customers-service-eureka-client-n-config-server
+
+  cloud:
+    config:
+      uri: http://localhost:8888
