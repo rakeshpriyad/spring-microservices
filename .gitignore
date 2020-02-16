@@ -16,3 +16,5 @@ target/
 
 # Branch switching
 generated/
+
+node_modules
