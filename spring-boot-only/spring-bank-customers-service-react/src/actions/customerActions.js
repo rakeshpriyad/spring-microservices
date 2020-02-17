@@ -4,6 +4,7 @@ import { GET_ERRORS, GET_CUSTOMERS } from "./types";
 export const createCustomer = (customer, history) => async dispatch => {
   try {
     const res = await axios.post("http://localhost:8090/customer/", customer);
+    console.log(res);
     history.push("/dashboard");
   } catch (err) {
     console.log(err)
@@ -16,6 +17,7 @@ export const createCustomer = (customer, history) => async dispatch => {
 
 export const getCustomers = () => async dispatch => {
   const res = await axios.get("http://localhost:8090/customer/all");
+  console.log(res);
   dispatch({
     type: GET_CUSTOMERS,
     payload: res.data

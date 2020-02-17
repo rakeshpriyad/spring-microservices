@@ -4,6 +4,7 @@ import CreateCustomerButton from "./Customer/CreateCustomerButton";
 import { connect } from "react-redux";
 import { getCustomers } from "../actions/customerActions";
 import PropTypes from "prop-types";
+import ShippingForm from "../components/shiping/shippingForm"
 
 class Dashboard extends Component {
   componentDidMount() {
@@ -18,8 +19,7 @@ class Dashboard extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-12">
-              <h1 className="display-4 text-center">Cstomers</h1>
-              <br />
+              
               <CreateCustomerButton />
 
               <br />
@@ -52,6 +52,7 @@ class Dashboard extends Component {
             </div>
           </div>
         </div>
+        <ShippingForm />
       </div>
     );
   }

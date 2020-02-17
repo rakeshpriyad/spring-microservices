@@ -1,31 +1,31 @@
 import React, { Component } from "react";
-import ProjectItem from "./Customer/CustomerItem";
-import CreateProjectButton from "./Customer/CreateCustomerButton";
+import UserItem from "./User/UserItem";
+import CreateUserButton from "./User/CreateUserButton";
 import { connect } from "react-redux";
-import { getProjects } from "../actions/customerActions";
+import { getUsers } from "../actions/userActions";
 import PropTypes from "prop-types";
 
 class Signup extends Component {
   componentDidMount() {
-    this.props.getCustomers();
+    this.props.getUsers();
   }
 
   render() {
-    const { users } = this.props.users;
+    const { users } = this.props.user;
 
     return (
-      <div className="projects">
+      <div className="users">
         <div className="container">
           <div className="row">
             <div className="col-md-12">
               <h1 className="display-4 text-center">Users</h1>
               <br />
-              <CreateCustomerButton />
+              <CreateUserButton />
 
               <br />
               <hr />
-              {customers.map(user => (
-                <CustomerItem key={customer.firstName} project={customer} />
+              {users.map(user => (
+                <UserItem key={user.firstName} project={user} />
               ))}
             </div>
           </div>
@@ -35,16 +35,16 @@ class Signup extends Component {
   }
 }
 
-Dashboard.propTypes = {
-  customer: PropTypes.object.isRequired,
-  getCustomers: PropTypes.func.isRequired
+Signup.propTypes = {
+  user: PropTypes.object.isRequired,
+  getUsers: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-  customer: state.customer
+  user: state.user
 });
 
 export default connect(
   mapStateToProps,
-  { getCustomers }
-)(Dashboard);
+  { getUsers }
+)(Signup);
