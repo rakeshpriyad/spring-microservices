@@ -10,14 +10,7 @@ import com.test.bank.branch.model.Customer;
 import com.test.bank.branch.model.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Timed("petclinic.owner")
 @RequiredArgsConstructor
 @Slf4j
+@CrossOrigin
 class CustomerController {
 
 	@Autowired
@@ -42,15 +36,15 @@ class CustomerController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Customer createOwner(@Valid @RequestBody Customer owner) {
-        return customerRepository.save(owner);
+    public Customer createCustomer(@Valid @RequestBody Customer customer) {
+        return customerRepository.save(customer);
     }
 
     /**
      * Read single Customer
      */
     @GetMapping(value = "/{customerId}")
-    public Optional<Customer> findOwner(@PathVariable("customerId") int customerId) {
+    public Optional<Customer> findCustomer(@PathVariable("customerId") int customerId) {
         return customerRepository.findById(customerId);
     }
 
@@ -67,7 +61,7 @@ class CustomerController {
      */
     @PutMapping(value = "/{customerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateOwner(@PathVariable("customerId") int customerId, @Valid @RequestBody CustomerRequest ownerRequest) {
+    public void updateCustomer(@PathVariable("customerId") int customerId, @Valid @RequestBody CustomerRequest ownerRequest) {
         final Optional<Customer> customer = customerRepository.findById(customerId);
        for(Account account:  customer.get().getAccount()) {
            System.out.println(account.getAccountNo());
