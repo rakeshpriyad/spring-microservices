@@ -42,7 +42,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     List<AccountType> findAccountTypes();
 
     @Query("FROM AccountType actType WHERE actType.id = :typeId")
-    Optional<AccountType> findfindAccountTypeById(@Param("typeId") int typeId);
+    Optional<AccountType> findAccountTypeById(@Param("typeId") int typeId);
 
 
 }

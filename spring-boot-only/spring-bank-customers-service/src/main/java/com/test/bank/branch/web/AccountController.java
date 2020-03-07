@@ -1,6 +1,7 @@
 package com.test.bank.branch.web;
 
 import com.test.bank.branch.model.AccountRepository;
+import com.test.bank.branch.service.AccountService;
 import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,18 +20,24 @@ import java.util.Optional;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-class AccountController {
+public class AccountController {
+
+	//@Autowired
+    //private AccountRepository accountRepository;
+
+	private AccountService accountService;
 
 	@Autowired
-    private AccountRepository accountRepository;
-
+    public AccountController(AccountService accountService){
+        this.accountService = accountService;
+    }
     /**
      * Create Account
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Account createAccount(@Valid @RequestBody Account account) {
-        return accountRepository.save(account);
+        return accountService.save.apply(account);
     }
 
     /**
@@ -38,7 +45,7 @@ class AccountController {
      */
     @GetMapping(value = "/{accountId}")
     public Optional<Account> findAccount(@PathVariable("accountId") int accountId) {
-        return accountRepository.findById(accountId);
+        return accountService.findById.apply(accountId);
     }
 
     /**
@@ -46,7 +53,9 @@ class AccountController {
      */
     @GetMapping
     public List<Account> findAll() {
-        return accountRepository.findAll();
+        Integer i =accountService.sum.apply(5,7);
+        accountService.sayHelloMsg.accept("Rajesh");
+        return accountService.findAll.get();
     }
 
     /**
@@ -55,13 +64,13 @@ class AccountController {
     @PutMapping(value = "/{accountId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateAccount(@PathVariable("accountId") int accountId, @Valid @RequestBody AccountRequest accountRequest) {
-        final Optional<Account> account = accountRepository.findById(accountId);
+        final Optional<Account> account = accountService.findById.apply(accountId);
 
         final Account accountModel = account.orElseThrow(() -> new ResourceNotFoundException("Customer "+accountId+" not found"));
         // This is done by hand for simplicity purpose. In a real life use-case we should consider using MapStruct.
         accountModel.setAccountNo(accountRequest.getAccountNo());
 
         log.info("Saving Account {}", accountModel);
-        accountRepository.save(accountModel);
+        accountService.save.apply(accountModel);
     }
 }
