@@ -1,30 +1,3 @@
-Java8::
-	1. Explain the functional Interface
-	2. Explain the Lambda expression and its usage.
-	3. Explain the difference between Stream and Colletion
-	4. Write a program to sort the hashmap based on value
-	5. Explain Concurrent HashMap changes (30 method added in java 8 in concrrent hashmap)
-
-DB:
-	1. What is the difference betbeen truncate and delete.
-TransactionManagement::
-	1. How to handle transaction between multiple microservices
-	2. What is the difference between Hibernate Transaction and Spring Transaction
-	3. How to handler MDB transaction if MDB is receiving the data from the queue then publishing it to another queue and saving into db and sending mail (how to maintain atomicity).
-DP :
-	1. Explain Singleton desing Pattern, which one is best and why?
-	2. Expalin Real life scenario where you used Decorator and why?
-	3. Explain the Observer Design pattern
-	4. Explainn the Template Design Pattern
-Hibernate:
-1. Difference between update and merge
-
-Docker and Kubernetes:
-	1. Explain Kubernetes architecture
-	2. How to do ssh in kubernetes container
-	3. How to restart the container in docker
-	4. Expalin the difference between save and export in docker command.
-	5. Difference between docker and swarm.
 Spring and MicroServices:
 	1. Explain the difference between DI and IOC.
 	2. Explain the difference between @Component and @Service
@@ -37,15 +10,3 @@ Spring and MicroServices:
 	9. Explain ELK (Elastic search, Logstash and Kibana)
 	10. How do you deploy microservice in Kubernetes
 	11. 
-Kafka:
-	1. Explain the difference between Kafka and JMS
-	2. Explain the Advantages and Disadvantages of Kafka.
-Cache:
-	1. Have you used Cache which one and why?
-	2. Explain the difference between Ehcase and Redish
-Performance Management:
-	1. How to trace process in unix.
-	2. How to handler OOM, explain your approach.
-	3. if the web page loading take much time around 5 min, what will be the approach to solve it.
-	4. What are the things to take care if part of code is identified as causing issue.
-	5. 

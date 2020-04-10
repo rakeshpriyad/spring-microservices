@@ -1,0 +1,168 @@
+Explaint the steps to create spring boot application and deploy on GCP:
+
+https://spring.io/guides/gs/spring-boot-docker/
+1.Create A spring boot application from spring initializer
+2. Create RestController, Service,DAO etc.
+3. user docker plugin to create docerfile or manually create docker file (Dockerfile)
+
+FROM openjdk:8-jdk-alpine
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
+
+
+====================================
+
+Running applications with user privileges helps to mitigate some risks (see for example a thread on StackExchange). So, an important improvement to the Dockerfile is to run the app as a non-root user:
+
+FROM openjdk:8-jdk-alpine
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+ARG JAR_FILE=target/*.jar
+COPY ${JAR_FILE} app.jar
+ENTRYPOINT ["java","-jar","/app.jar"]
+
+
+---------------------------------------
+Also, to take advantage of the clean separation between dependencies and application resources in a Spring Boot fat jar file, we will use a slightly different implementation of the Dockerfile:
+
+Dockerfile
+
+FROM openjdk:8-jdk-alpine
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+ARG DEPENDENCY=target/dependency
+COPY ${DEPENDENCY}/BOOT-INF/lib /app/lib
+COPY ${DEPENDENCY}/META-INF /app/META-INF
+COPY ${DEPENDENCY}/BOOT-INF/classes /app
+ENTRYPOINT ["java","-cp","app:app/lib/*","hello.Application"]
+---------------------------------------
+====================================
+
+4. Build docker image 
+$ docker build -t springio/gs-spring-boot-docker .
+5. Test locally::
+	$ docker run -p 8080:8080 -t springio/gs-spring-boot-docker
+
+	http://localhost:8080
+6. When it is running you can see in the list of containers, e.g:
+
+$ docker ps
+CONTAINER ID        IMAGE                                   COMMAND                  CREATED             STATUS              PORTS                    NAMES
+81c723d22865        springio/gs-spring-boot-docker:latest   "java -Djava.secur..."   34 seconds ago      Up 33 seconds       0.0.0.0:8080->8080/tcp   goofy_brown
+
+7. Create Kubernetes Cluster and Push the Docker Image to the Container Registry
+Log in to the Google Cloud Console and go the Kubernetes Clusters page then create a new cluster with the name "demoproject-dev-kube-cluster". If you created a cluster already please use that. Otherwise create a new cluster.
+
+GCP option would look like
+Create Kubernetes Cluster
+Name
+demoproject-dev-kube-cluster
+Description
+demoproject-dev-kube-cluster
+Location
+Zonal(default selected radio button)
+Regional
+Cluster Version
+Machine Type
+2 CPU 3.75 GB Customize
+
+After creating a cluster, click the connect button and get the command to connect the cluster and execute the command into your gcloud sdk.
+Name Location 	Cluster size Total Cores Total memory Notification Label [connect]
+
+Cluster can be created using command line:
+
+gcloud container clusters create demoproject-dev-kube-cluster
+
+8. connect the cluster via command line
+$ gcloud container clusters get-credentials demoproject-dev-kube-cluster --zone asia-east1-a --project demoproject-dev
+After executing the above command, you can see the below messages on the console.
+
+Fetching cluster endpoint and auth data.
+kubeconfig entry generated for demoproject-dev-kube-cluster.
+
+9. Now, push the docker image into the Google Cloud Container Registry. Execute the commandgcloud docker -a and get the Short-lived access token for accessing the Google cloud instances.
+
+Then execute the below command on Google SDK to push the docker image into the Container Registry.
+
+gcloud docker -- push gcr.io/demoproject-dev/gs-spring-boot-docker:1.0
+
+Pushing docker image to container registry will take few minutes. After pushing, you can see the docker image on the container registry in your Google cloud console.
+
+10.Now, create a deployment to run the docker image by using command line approach.
+
+Syntax:
+
+  kubectl run {deployment_name} --image=gcr.io/$PROJECT_ID/{name}:{tag} --port={port}
+  
+kubectl run gs-spring-boot-docker --image=gcr.io/demoproject-dev/gs-spring-boot-docker:1.0 --port=8000
+
+11. To view, the deployments execute the command
+$ kubectl get deployments
+12. To view, the list of pods running on the Kubernetes clusters
+kubectl get pods
+13. Now, create a service to expose the application to external traffic by using command line approach.
+
+Syntax:
+
+kubectl expose deployment {deployment_name} --type="LoadBalancer"
+Command to create a service:
+
+kubectl expose deployment userservice --type="LoadBalancer"
+To view the list of services running
+
+kubectl get services
+You can view the External IP address of the service you created. By using that external IP address you can access your application.
+
+In my case, the external IP of the user-service application is given below
+
+NAME					TYPE			CLUSTER-IP 		EXTERNAL-IP 	PORTS			AGE
+gs-spring-boot-docker	LoadBalancer	10.51.243.150	35.201.152.42	8000:31118/TCP	56s
+
+Then access your application by using this External IP - http://35.201.152.42:8000/users
+
+kubectl scale deployment gs-spring-boot-docker --replicas=2
+
+
+14. Instead of deploying through command line using kubectl run and expose we can use yaml file config
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gs-spring-boot-docker
+  labels:
+    app: gs-spring-boot-docker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gs-spring-boot-docker
+    spec:
+      containers:
+        - name: gs-spring-boot-docker
+          image: <user>/gs-spring-boot-docker
+          ports:
+            - containerPort: 8080
+			
+15. deploy using yaml file 
+kubectl apply -f deployment.yaml		  
+
+
+16. Following config created to expose the service
+apiVersion: v1
+kind: Service
+metadata:
+  name: gs-spring-boot-docker
+spec:
+  type: NodePort
+  selector:
+    app: gs-spring-boot-docker
+  ports:
+    - protocol: TCP
+      port: 8080
+      nodePort: 30011
+	  
+16. To verify:
+$ kubectl get deployments
+
+17. Cleanup
+gcloud container clusters delete [CLUSTER NAME]--zone=us-central1-b
