@@ -1,0 +1,153 @@
+DB:
+1. What is ACID property in a database?
+	ACID is a set of properties in the database that ensures that the transactions are processed reliably even in case of power failures or error events. ACID stands for Atomicity, Consistency, Isolation, and Durability. When a sequence of database operations satisfies the ACID properties, they form a single logical operation and are considered as a transaction. For example, transferring funds from one bank to another requires multiple changes but is considered as a single transaction.
+
+	Atomicity- Transaction follows all or nothing rule i.e. it either runs to completion or does not execute at all. If one part of the transaction fails due to crashes, errors or power failure, then the entire transaction fails and the database remains in its original state. A transaction is either committed or aborted, it does not occur partially. In case the transaction is committed changes are visible in the database. In case it is aborted no changes are made to the database.
+
+	Consistency- This property ensures the correctness of the database. The database remains consistent before and after the execution of the transaction. Integrity constraints are maintained and the changes made to the database are valid as per the defined rules.
+
+	Isolation- This property ensures database consistency during concurrent execution of multiple transactions. Transactions can occur independently in isolation without interfering in each other’s execution. When transactions execute concurrently the database will be in the same state as it would be if they were executed sequentially.
+
+	Durability- This property ensures that once a transaction is committed, the updates in the database will be stored on the disk permanently. It will persist even in case of system failure, crashes, errors or power loss.
+
+	The ACID properties basically provide a mechanism to ensure that the database is correct and consistent.
+
+
+2. What is the difference betbeen truncate and delete.
+	+----------------------------------------+----------------------------------------------+
+	|                Truncate                |                    Delete                    |
+	+----------------------------------------+----------------------------------------------+
+	| We can't Rollback after performing     | We can Rollback after delete.                |
+	| Truncate.                              |                                              |
+	|                                        |                                              |
+	| Example:                               | Example:                                     |
+	| BEGIN TRAN                             | BEGIN TRAN                                   |
+	| TRUNCATE TABLE tranTest                | DELETE FROM tranTest                         |
+	| SELECT * FROM tranTest                 | SELECT * FROM tranTest                       |
+	| ROLLBACK                               | ROLLBACK                                     |
+	| SELECT * FROM tranTest                 | SELECT * FROM tranTest                       |
+	+----------------------------------------+----------------------------------------------+
+	| Truncate reset identity of table.      | Delete does not reset identity of table.     |
+	+----------------------------------------+----------------------------------------------+
+	| It locks the entire table.             | It locks the table row.                      |
+	+----------------------------------------+----------------------------------------------+
+	| Its DDL(Data Definition Language)      | Its DML(Data Manipulation Language)          |
+	| command.                               | command.                                     |
+	+----------------------------------------+----------------------------------------------+
+	| We can't use WHERE clause with it.     | We can use WHERE to filter data to delete.   |
+	+----------------------------------------+----------------------------------------------+
+	| Trigger is not fired while truncate.   | Trigger is fired.                            |
+	+----------------------------------------+----------------------------------------------+
+	| Syntax :                               | Syntax :                                     |
+	| 1) TRUNCATE TABLE table_name           | 1) DELETE FROM table_name                    |
+	|                                        | 2) DELETE FROM table_name WHERE              |
+	|                                        |    example_column_id IN (1,2,3)              |
+	+----------------------------------------+-----------------------------------------------
+	| Faster								 |	Slower										|
+	+----------------------------------------+-----------------------------------------------
+	
+3. How to remove duplicate rows from the table?
+	We can delete duplicate rows from table using the concept of max (rowid) of table.
+
+	Step 1: Select eno FROM emp WHERE ROWID <>
+
+	(Select max (rowid) from Student b where eno=b.eno);
+
+	Step 2:  Delete duplicate rows
+
+	Delete FROM emp WHERE ROWID <>
+
+	(Select max (rowid) from emp b where eno=b.eno)
+
+4.	How to find count of duplicate rows? (95% asked in SQL queries for Interviews )
+
+	Answer:
+
+	Select rollno, count (rollno) from Student
+
+	Group by rollno
+
+	Having count (rollno)>1
+
+	Order by count (rollno) desc;
+5. Write an SQL Query to find maximum salary in each department of an organisation.
+	By using the MAX() function and grouping on the basis of Department ID, we can calculate the maximum salary in each department. The following query will help us achieve the desired result.
+
+	SELECT DeptId, MAX(Salary) FROM Employee GROUP BY DeptId
+
+	In case we need the department name too, we will need to join the Employee table with Department table using foreign key DepId.  The following query can be used.
+
+	SELECT DeptName, MAX(Salary) FROM Employee e RIGHT JOIN Department d ON e.DeptId =d.DeptId GROUP BY DeptName	
+	
+6. How to display 1 to 100 Numbers with query?
+	Select level from dual connect by level <=100;	
+7. How to find Second highest salary in Employee table using self-join?
+	
+		select distinct salary from Empoyee e1 where 2 = (select count(distinct salary) from Employee e2 where  e1.salary <= e2.salary);
+		
+		Explaination of Query:
+
+		1.Distinct keyword:–>The Distinct keyword is very useful keyword which will eliminate duplicates and fetches the Result.
+		2.Aliases–> Alias is nothing but the obfuscation technique to protect the real names of database fields
+		3.Count()–>Count() function is used to count the records in the table.
+		Step 1: So to understand the above query we will start with simple select statement.
+		Select * from Employee;
+		Output:
+		Employee_num	Employee_name	Department	Salary
+		1	Amit	OBIEE	680000
+		2	Rohan	OBIEE	550000
+		3	Rohit	OBIEE	430000
+
+		Here our intention is to fetch the record where salary is second highest.
+
+		Step 2 :We will fetch the distinct Salary of employee and give the alias to it.
+		Select distinct Salary from Employee e1;
+
+
+		 
+		Output:
+
+		Salary
+		680000
+		550000
+		430000
+		Step 3 :We need to calculate Second highest salary.So we need to get the count of all distinct salaries.
+		Select count(distinct Salary) from Employee e2;
+		Output: 
+		 3
+
+		Step 4 :We actually need to calculate second highest salary.So we will modify the Step 2 query and Step3 Query:
+
+		Select distinct Salary from Employee e1 where 2=
+
+		Select count(distinct Salary) from Employee e2 where e1.salary<=e2.salary;
+
+		Output:
+
+		550000
+		The above query will give us the second highest salary of employee.Hope you will understand the logic behind fetching the second highest salary.There are other ways to find second highest salary of employee using rank and dense_rank function.
+8.How to Show the Max marks and min marks together from student table?
+
+	Answer:
+
+	Select max (marks) from Student
+	Union
+	Select min (marks) from Student;		
+
+9. How to calculate number of rows in table without using count function?
+
+	Answer:
+
+	Select table_name, num_rows from user_tables where table_name=’Employee’;	
+	
+10. How to fetch common records from two different tables which has not any joining condition.
+	Answer:
+		Select * from Table1
+		Intersect
+		Select * from Table2;
+11. Display 4 to 7 records from Employee table.
+
+	Answer:
+
+	Select * from (Select rownum as ‘No_of_Row’, E.* from Employee E)
+	Where No_of_Row between 4 and 7;		

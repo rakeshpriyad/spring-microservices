@@ -1,0 +1,541 @@
+Algo:
+	1. What is the time complexity of Binary Search and explain how.
+	
+		Calculating Time complexity:
+
+		Let say the iteration in Binary Search terminates after k iterations. In the above example, it terminates after 3 iterations, so here k = 3
+		At each iteration, the array is divided by half. So let’s say the length of array at any iteration is n
+		At Iteration 1,
+		Length of array = n
+		At Iteration 2,
+		Length of array = n/2
+		At Iteration 3,
+		Length of array = (n/2)/2 = n/22
+		Therefore, after Iteration k,
+		Length of array = n/2k
+		Also, we know that after
+		After k divisions, the length of array becomes 1
+		Therefore
+		Length of array = n/2k = 1
+		=> n = 2k
+		Applying log function on both sides:
+		=> log2 (n) = log2 (2k)
+		=> log2 (n) = k log2 (2)
+		As (loga (a) = 1)
+		Therefore,
+		=> k = log2 (n)
+		Hence, the time complexity of Binary Search is
+
+		log2 (n)
+
+
+
+
+	2. What will be time complexity of TreeMap when contains key method is used. and explain how.
+		For operations like add, remove, containsKey, time complexity is O(log n where n is number of elements present in TreeMap).
+		TreeMap always keeps the elements in a sorted(increasing) order, while the elements in a HashMap have no order. TreeMap also provides some cool methods for first, last, floor and ceiling of keys.
+	3. Write a program to detect loop in linked list.
+		// Java program to detect loop in a linked list 
+		import java.util.*; 
+
+		public class LinkedList { 
+
+			static Node head; // head of list 
+
+			/* Linked list Node*/
+			static class Node { 
+				int data; 
+				Node next; 
+				Node(int d) 
+				{ 
+					data = d; 
+					next = null; 
+				} 
+			} 
+
+			/* Inserts a new Node at front of the list. */
+			static public void push(int new_data) 
+			{ 
+				/* 1 & 2: Allocate the Node & 
+						Put in the data*/
+				Node new_node = new Node(new_data); 
+
+				/* 3. Make next of new Node as head */
+				new_node.next = head; 
+
+				/* 4. Move the head to point to new Node */
+				head = new_node; 
+			} 
+
+			// Returns true if there is a loop in linked 
+			// list else returns false. 
+			static boolean detectLoop(Node h) 
+			{ 
+				HashSet<Node> s = new HashSet<Node>(); 
+				while (h != null) { 
+					// If we have already has this node 
+					// in hashmap it means their is a cycle 
+					// (Because you we encountering the 
+					// node second time). 
+					if (s.contains(h)) 
+						return true; 
+
+					// If we are seeing the node for 
+					// the first time, insert it in hash 
+					s.add(h); 
+
+					h = h.next; 
+				} 
+
+				return false; 
+			} 
+
+			/* Driver program to test above function */
+			public static void main(String[] args) 
+			{ 
+				LinkedList llist = new LinkedList(); 
+
+				llist.push(20); 
+				llist.push(4); 
+				llist.push(15); 
+				llist.push(10); 
+
+				/*Create loop for testing */
+				llist.head.next.next.next.next = llist.head; 
+
+				if (detectLoop(head)) 
+					System.out.println("Loop found"); 
+				else
+					System.out.println("No Loop"); 
+			} 
+		}
+
+			======================================================================
+			// Java program to detect loop in a linked list 
+			/*
+			Floyd’s Cycle-Finding Algorithm: This is the fastest method and has been described below:
+
+			Traverse linked list using two pointers. 
+			Move one pointer(slow_p) by one and another pointer(fast_p) by two. 
+			If these pointers meet at the same node then there is a loop. If pointers do not meet then linked list doesn’t have a loop
+			*/
+			class LinkedList { 
+				Node head; // head of list 
+
+				/* Linked list Node*/
+				class Node { 
+					int data; 
+					Node next; 
+					Node(int d) 
+					{ 
+						data = d; 
+						next = null; 
+					} 
+				} 
+
+				/* Inserts a new Node at front of the list. */
+				public void push(int new_data) 
+				{ 
+					/* 1 & 2: Allocate the Node & 
+							Put in the data*/
+					Node new_node = new Node(new_data); 
+
+					/* 3. Make next of new Node as head */
+					new_node.next = head; 
+
+					/* 4. Move the head to point to new Node */
+					head = new_node; 
+				} 
+
+				int detectLoop() 
+				{ 
+					Node slow_p = head, fast_p = head; 
+					while (slow_p != null && fast_p != null && fast_p.next != null) { 
+						slow_p = slow_p.next; 
+						fast_p = fast_p.next.next; 
+						if (slow_p == fast_p) { 
+							System.out.println("Found loop"); 
+							return 1; 
+						} 
+					} 
+					return 0; 
+				} 
+
+				/* Driver program to test above functions */
+				public static void main(String args[]) 
+				{ 
+					LinkedList llist = new LinkedList(); 
+
+					llist.push(20); 
+					llist.push(4); 
+					llist.push(15); 
+					llist.push(10); 
+
+					/*Create loop for testing */
+					llist.head.next.next.next.next = llist.head; 
+
+					llist.detectLoop(); 
+				} 
+			} 
+=======================================================================================================
+	4. Write a program to detect loop and break the loop
+		// Java program to detect and remove loop in linked list 
+		This method is also dependent on Floyd’s Cycle detection algorithm.
+		Detect Loop using Floyd’s Cycle detection algorithm and get the pointer to a loop node.
+		Count the number of nodes in loop. Let the count be k.
+		Fix one pointer to the head and another to a kth node from the head.
+		Move both pointers at the same pace, they will meet at loop starting node.
+		Get a pointer to the last node of the loop and make next of it as NULL.
+		
+		class LinkedList { 
+
+			static Node head; 
+
+			static class Node { 
+
+				int data; 
+				Node next; 
+
+				Node(int d) 
+				{ 
+					data = d; 
+					next = null; 
+				} 
+			} 
+
+			// Function that detects loop in the list 
+			int detectAndRemoveLoop(Node node) 
+			{ 
+				Node slow = node, fast = node; 
+				while (slow != null && fast != null && fast.next != null) { 
+					slow = slow.next; 
+					fast = fast.next.next; 
+
+					// If slow and fast meet at same point then loop is present 
+					if (slow == fast) { 
+						removeLoop(slow, node); 
+						return 1; 
+					} 
+				} 
+				return 0; 
+			} 
+
+			// Function to remove loop 
+			void removeLoop(Node loop, Node head) 
+			{ 
+				Node ptr1 = loop; 
+				Node ptr2 = loop; 
+
+				// Count the number of nodes in loop 
+				int k = 1, i; 
+				while (ptr1.next != ptr2) { 
+					ptr1 = ptr1.next; 
+					k++; 
+				} 
+
+				// Fix one pointer to head 
+				ptr1 = head; 
+
+				// And the other pointer to k nodes after head 
+				ptr2 = head; 
+				for (i = 0; i < k; i++) { 
+					ptr2 = ptr2.next; 
+				} 
+
+				/* Move both pointers at the same pace, 
+				they will meet at loop starting node */
+				while (ptr2 != ptr1) { 
+					ptr1 = ptr1.next; 
+					ptr2 = ptr2.next; 
+				} 
+
+				// Get pointer to the last node 
+				while (ptr2.next != ptr1) { 
+					ptr2 = ptr2.next; 
+				} 
+
+				/* Set the next node of the loop ending node 
+				to fix the loop */
+				ptr2.next = null; 
+			} 
+
+			// Function to print the linked list 
+			void printList(Node node) 
+			{ 
+				while (node != null) { 
+					System.out.print(node.data + " "); 
+					node = node.next; 
+				} 
+			} 
+
+			// Driver program to test above functions 
+			public static void main(String[] args) 
+			{ 
+				LinkedList list = new LinkedList(); 
+				list.head = new Node(50); 
+				list.head.next = new Node(20); 
+				list.head.next.next = new Node(15); 
+				list.head.next.next.next = new Node(4); 
+				list.head.next.next.next.next = new Node(10); 
+
+				// Creating a loop for testing 
+				head.next.next.next.next.next = head.next.next; 
+				list.detectAndRemoveLoop(head); 
+				System.out.println("Linked List after removing loop : "); 
+				list.printList(head); 
+			} 
+		} 
+		========================detect and remove using hashmap===
+		// Java program to detect and remove loop in a linked list 
+		import java.util.*; 
+
+		public class LinkedList { 
+
+			static Node head; // head of list 
+
+			/* Linked list Node*/
+			static class Node { 
+				int data; 
+				Node next; 
+				Node(int d) 
+				{ 
+					data = d; 
+					next = null; 
+				} 
+			} 
+
+			/* Inserts a new Node at front of the list. */
+			static public void push(int new_data) 
+			{ 
+				/* 1 & 2: Allocate the Node & 
+						Put in the data*/
+				Node new_node = new Node(new_data); 
+
+				/* 3. Make next of new Node as head */
+				new_node.next = head; 
+
+				/* 4. Move the head to point to new Node */
+				head = new_node; 
+			} 
+
+			// Function to print the linked list 
+			void printList(Node node) 
+			{ 
+				while (node != null) { 
+					System.out.print(node.data + " "); 
+					node = node.next; 
+				} 
+			} 
+
+			// Returns true if the loop is removed from the linked 
+			// list else returns false. 
+			static boolean removeLoop(Node h) 
+			{ 
+				HashSet<Node> s = new HashSet<Node>(); 
+				Node prev = null; 
+				while (h != null) { 
+					// If we have already has this node 
+					// in hashmap it means their is a cycle and we 
+					// need to remove this cycle so set the next of 
+					// the previous pointer with null. 
+
+					if (s.contains(h)) { 
+						prev.next = null; 
+						return true; 
+					} 
+
+					// If we are seeing the node for 
+					// the first time, insert it in hash 
+					else { 
+						s.add(h); 
+						prev = h; 
+						h = h.next; 
+					} 
+				} 
+
+				return false; 
+			} 
+
+			/* Driver program to test above function */
+			public static void main(String[] args) 
+			{ 
+				LinkedList llist = new LinkedList(); 
+
+				llist.push(20); 
+				llist.push(4); 
+				llist.push(15); 
+				llist.push(10); 
+
+				/*Create loop for testing */
+				llist.head.next.next.next.next = llist.head; 
+
+				if (removeLoop(head)) { 
+					System.out.println("Linked List after removing loop"); 
+					llist.printList(head); 
+				} 
+				else
+					System.out.println("No Loop found"); 
+			} 
+		} 
+
+
+
+	5. Write a program to rotate the array.
+	
+
+		class RotateArray { 
+			/*Function to left rotate arr[] of size n by d*/
+			void leftRotate(int arr[], int d, int n) 
+			{ 
+				for (int i = 0; i < d; i++) 
+					leftRotatebyOne(arr, n); 
+			} 
+
+			void leftRotatebyOne(int arr[], int n) 
+			{ 
+				int i, temp; 
+				temp = arr[0]; 
+				for (i = 0; i < n - 1; i++) 
+					arr[i] = arr[i + 1]; 
+				arr[i] = temp; 
+			} 
+
+			/* utility function to print an array */
+			void printArray(int arr[], int n) 
+			{ 
+				for (int i = 0; i < n; i++) 
+					System.out.print(arr[i] + " "); 
+			} 
+
+			// Driver program to test above functions 
+			public static void main(String[] args) 
+			{ 
+				RotateArray rotate = new RotateArray(); 
+				int arr[] = { 1, 2, 3, 4, 5, 6, 7 }; 
+				rotate.leftRotate(arr, 2, 7); 
+				rotate.printArray(arr, 7); 
+			} 
+		} 
+
+
+	
+	6. How to find the height of tree in non-recursive manner.
+				// Data structure to store a Binary Tree node
+		class Node
+		{
+			int key;
+			Node left = null, right = null;
+
+			Node(int key) {
+				this.key = key;
+			}
+		}
+
+		class Main {
+
+			// Recursive function to calculate height of given binary tree
+			public static int height(Node root)
+			{
+				// Base case: empty tree has height 0
+				if (root == null) {
+					return 0;
+				}
+
+				// recur for left and right subtree and consider maximum depth
+				return 1 + Math.max(height(root.left), height(root.right));
+			}
+
+			// main function
+			public static void main(String[] args)
+			{
+				Node root = null;
+
+				root = new Node(15);
+				root.left = new Node(10);
+				root.right = new Node(20);
+				root.left.left = new Node(8);
+				root.left.right = new Node(12);
+				root.right.left = new Node(16);
+				root.right.right = new Node(25);
+
+				System.out.print("The height of the binary tree is " + height(root));
+			}
+		}
+		
+		
+		+++++++++++++++++++++Iterative+++++++++++++++++++++
+			import java.util.ArrayDeque;
+			import java.util.Queue;
+
+			// Data structure to store a Binary Tree node
+			class Node
+			{
+				int key;
+				Node left = null, right = null;
+
+				Node(int data) {
+					this.key = data;
+				}
+			}
+
+			class Main {
+
+				// Iterative function to calculate height of given binary tree
+				// by doing level order traversal of the tree
+				public static int height(Node root)
+				{
+					// empty tree has height 0
+					if (root == null) {
+						return 0;
+					}
+
+					// create an empty queue and enqueue root node
+					Queue<Node> queue = new ArrayDeque<>();
+					queue.add(root);
+
+					Node front = null;
+					int height = 0;
+
+					// do till queue is not empty
+					while (!queue.isEmpty())
+					{
+						// calculate number of nodes in current level
+						int size = queue.size();
+
+						// process each node of current level and enqueue their
+						// non-empty left and right child to queue
+						while (size-- > 0) {
+							front = queue.poll();
+
+							if (front.left != null) {
+								queue.add(front.left);
+							}
+
+							if (front.right != null) {
+								queue.add(front.right);
+							}
+						}
+
+						// increment height by 1 for each level
+						height++;
+					}
+
+					return height;
+				}
+
+				// main function
+				public static void main(String[] args)
+				{
+					Node root = null;
+
+					root = new Node(15);
+					root.left = new Node(10);
+					root.right = new Node(20);
+					root.left.left = new Node(8);
+					root.left.right = new Node(12);
+					root.right.left = new Node(16);
+					root.right.right = new Node(25);
+
+					System.out.print("The height of the binary tree is " + height(root));
+				}
+			}

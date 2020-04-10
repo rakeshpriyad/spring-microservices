@@ -1,0 +1,493 @@
+Java:
+1. How HashMap works internally?
+2. Difference between interface and Abastract class, with real life usage
+3. Write a program to sort the hashmap based on value:
+List<Map.Entry<String, Integer>> list = new ArrayList<>(hm.entrySet());
+Colletion.sort(list, new Comparator<Map.Entry<String,Integer>>(){
+	public int compare(Map.Entry<String,Integer> obj1, Map.Entry<String,Integer> obj2){
+		return obj1.getValue().compareTo(obj2.getValue());
+	}	
+	}
+	
+	HashMap<String, Integer) sortedMap = new LinkedHashMap<String,Integer>();
+	for(Map.Entry<String, Integer> entry: list){
+		sortedMap.put(entry.getKey(), entry.getValue());
+	}
+4. Difference between Countdownlatch and Cyclic Barrier:
+	First let’s discuss Similarity between CyclicBarrier and CountDownLatch in Java. CyclicBarrier and CountDownLatch are similar because they wait for specified number of thread to reach certain point and make count/parties equal to 0. But ,
+	for completing wait in CountDownLatch specified number of threads must call countDown() method in Java.
+	for completing wait in CyclicBarrier specified number of threads must call await() method in Java.
+
+	Let’ see there constructor’s in Java >
+
+	CountDownLatch(int count)                                            CyclicBarrier(int parties)
+	CountDownLatch is initialized with given count.                     New CyclicBarrier is created where parties number of thread wait for each other to 																    reach common barrier point, when all threads have reached common barrier point, parties 								number of waiting threads are released.
+																		count specifies the number of events that must occur before latch is released.
+
+	This is very important difference between CyclicBarrier and CountDownLatch in java. CyclicBarrier can be awaited repeatedly, but CountDownLatch can’t be awaited repeatedly. i.e. once count has become 0 cyclicBarrier can be used again but CountDownLatch cannot be used again in Java.
+	Another important difference between CyclicBarrier and CountDownLatch in java. CyclicBarrier can be used to trigger event, but CountDownLatch can’t be used to launch event. i.e. once count has become 0 cyclicBarrier can trigger event in Java but CountDownLatch can’t.
+
+	How can cyclicBarrier launch event in java? CyclicBarrier provides constructor for triggering event in Java. CyclicBarrier(int parties, Runnable barrierAction)
+	New CyclicBarrier is created where parties number of thread wait for each other to reach common barrier point, when all threads have reached common barrier point, parties number of waiting threads are released and barrierAction (event) is triggered in Java.
+
+5. Type of ThreadPool in java, Difference between thread pool and normal thread in java
+	Fixed thread pool executor – Creates a thread pool that reuses a fixed number of threads to execute any number of tasks. If additional tasks are submitted when all threads are active, they will wait in the queue until a thread is available. It is the best fit for most off the real-life use-cases.
+	ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newFixedThreadPool(10);
+	Cached thread pool executor – Creates a thread pool that creates new threads as needed, but will reuse previously constructed threads when they are available. DO NOT use this thread pool if tasks are long-running. It can bring down the system if the number of threads goes beyond what the system can handle.
+	ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
+	Scheduled thread pool executor – Creates a thread pool that can schedule commands to run after a given delay, or to execute periodically.
+	ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newScheduledThreadPool(10);
+	Single thread pool executor – Creates single thread to execute all tasks. Use it when you have only one task to execute.
+	ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newSingleThreadExecutor();
+	Work stealing thread pool executor – Creates a thread pool that maintains enough threads to support the given parallelism level. Here parallelism level means the maximum number of threads which will be used to execute a given task, at a single point of time, in multi-processor machines.
+	ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newWorkStealingPool(4);
+	
+	ExecutorService executor = Executors.newWorkStealingPool();
+
+	List<Callable<String>> callables = Arrays.asList(
+    callable("task1", 2),
+    callable("task2", 1),
+    callable("task3", 3));
+
+	String result = executor.invokeAny(callables);
+	System.out.println(result);
+
+6. Custom Thread pool in java:
+
+	package com.test.threads;
+	 
+	import java.util.concurrent.LinkedBlockingQueue;
+	 
+	@SuppressWarnings("unused")
+	public class CustomThreadPool 
+	{
+		//Thread pool size
+		private final int poolSize;
+		 
+		//Internally pool is an array
+		private final WorkerThread[] workers;
+		 
+		// FIFO ordering
+		private final LinkedBlockingQueue<Runnable> queue;
+	 
+		public CustomThreadPool(int poolSize) 
+		{
+			this.poolSize = poolSize;
+			queue = new LinkedBlockingQueue<Runnable>();
+			workers = new WorkerThread[poolSize];
+	 
+			for (int i = 0; i < poolSize; i++) {
+				workers[i] = new WorkerThread();
+				workers[i].start();
+			}
+		}
+	 
+		public void execute(Runnable task) {
+			synchronized (queue) {
+				queue.add(task);
+				queue.notify();
+			}
+		}
+	 
+		private class WorkerThread extends Thread {
+			public void run() {
+				Runnable task;
+	 
+				while (true) {
+					synchronized (queue) {
+						while (queue.isEmpty()) {
+							try {
+								queue.wait();
+							} catch (InterruptedException e) {
+								System.out.println("An error occurred while queue is waiting: " + e.getMessage());
+							}
+						}
+						task = (Runnable) queue.poll();
+					}
+	 
+					try {
+						task.run();
+					} catch (RuntimeException e) {
+						System.out.println("Thread pool is interrupted due to an issue: " + e.getMessage());
+					}
+				}
+			}
+		}
+	 
+		public void shutdown() {
+			System.out.println("Shutting down thread pool");
+			for (int i = 0; i < poolSize; i++) {
+				workers[i] = null;
+			}
+		}
+	}
+	
+	package com.test.threads;
+ 
+	public class CustomThreadPoolExample 
+	{
+		public static void main(String[] args) 
+		{
+			CustomThreadPool customThreadPool = new CustomThreadPool(2);
+			 
+			for (int i = 1; i <= 5; i++) 
+			{
+				Task task = new Task("Task " + i);
+				System.out.println("Created : " + task.getName());
+	 
+				customThreadPool.execute(task);
+			}
+		}
+	}
+	
+	Program output:
+
+	Console
+	Created : Task 1
+	Created : Task 2
+	Created : Task 3
+	Created : Task 4
+	Created : Task 5
+	Executing : Task 1
+	Executing : Task 2
+	Executing : Task 3
+	Executing : Task 4
+	Executing : Task 5
+7. How to handle log content overwritting in log4j/sl4j.	
+8. What is the serialization, have yo used in your project and why?
+		Serialization is a mechanism of converting the state of an object into a byte stream. Deserialization is the reverse process where the byte stream is used to recreate the actual Java object in memory. This mechanism is used to persist the object.
+
+		serialize-deserialize-java
+
+		The byte stream created is platform independent. So, the object serialized on one platform can be deserialized on a different platform.
+
+
+
+
+		To make a Java object serializable we implement the java.io.Serializable interface.
+		The ObjectOutputStream class contains writeObject() method for serializing an Object.
+		public final void writeObject(Object obj)
+							   throws IOException
+		The ObjectInputStream class contains readObject() method for deserializing an object.
+		public final Object readObject()
+						  throws IOException,
+					   ClassNotFoundException
+
+
+		Advantages of Serialization
+		1. To save/persist state of an object.
+		2. To travel an object across a network.
+
+
+
+		Only the objects of those classes can be serialized which are implementing java.io.Serializable interface.
+		Serializable is a marker interface (has no data member and method). It is used to “mark” java classes so that objects of these classes may get certain capability. Other examples of marker interfaces are:- Cloneable and Remote.
+
+		Points to remember
+		1. If a parent class has implemented Serializable interface then child class doesn’t need to implement it but vice-versa is not true.
+		2. Only non-static data members are saved via Serialization process.
+		3. Static data members and transient data members are not saved via Serialization process.So, if you don’t want to save value of a non-static data member then make it transient.
+		4. Constructor of object is never called when an object is deserialized.
+		5. Associated objects must be implementing Serializable interface.
+		Example :
+
+		class A implements Serializable{
+
+		// B also implements Serializable
+		// interface.
+		B ob=new B();  
+		}
+		SerialVersionUID
+		The Serialization runtime associates a version number with each Serializable class called a SerialVersionUID, which is used during Deserialization to verify that sender and reciever of a serialized object have loaded classes for that object which are compatible with respect to serialization. If the reciever has loaded a class for the object that has different UID than that of corresponding sender’s class, the Deserialization will result in an InvalidClassException. A Serializable class can declare its own UID explicitly by declaring a field name.
+		It must be static, final and of type long.
+		i.e- ANY-ACCESS-MODIFIER static final long serialVersionUID=42L;
+
+		If a serializable class doesn’t explicitly declare a serialVersionUID, then the serialization runtime will calculate a default one for that class based on various aspects of class, as described in Java Object Serialization Specification. However it is strongly recommended that all serializable classes explicitly declare serialVersionUID value, since its computation is highly sensitive to class details that may vary depending on compiler implementations, any change in class or using different id may affect the serialized data.
+
+		It is also recommended to use private modifier for UID since it is not useful as inherited member.
+
+		serialver
+		The serialver is a tool that comes with JDK. It is used to get serialVersionUID number for Java classes.
+		You can run the following command to get serialVersionUID
+
+
+
+
+		serialver [-classpath classpath] [-show] [classname…]
+
+
+
+		Example 1:
+
+		filter_none
+		edit
+		play_arrow
+
+		brightness_4
+		// Java code for serialization and deserialization  
+		// of a Java object 
+		import java.io.*; 
+		  
+		class Demo implements java.io.Serializable 
+		{ 
+			public int a; 
+			public String b; 
+		  
+			// Default constructor 
+			public Demo(int a, String b) 
+			{ 
+				this.a = a; 
+				this.b = b; 
+			} 
+		  
+		} 
+		  
+		class Test 
+		{ 
+			public static void main(String[] args) 
+			{    
+				Demo object = new Demo(1, "geeksforgeeks"); 
+				String filename = "file.ser"; 
+				  
+				// Serialization  
+				try
+				{    
+					//Saving of object in a file 
+					FileOutputStream file = new FileOutputStream(filename); 
+					ObjectOutputStream out = new ObjectOutputStream(file); 
+					  
+					// Method for serialization of object 
+					out.writeObject(object); 
+					  
+					out.close(); 
+					file.close(); 
+					  
+					System.out.println("Object has been serialized"); 
+		  
+				} 
+				  
+				catch(IOException ex) 
+				{ 
+					System.out.println("IOException is caught"); 
+				} 
+		  
+		  
+				Demo object1 = null; 
+		  
+				// Deserialization 
+				try
+				{    
+					// Reading the object from a file 
+					FileInputStream file = new FileInputStream(filename); 
+					ObjectInputStream in = new ObjectInputStream(file); 
+					  
+					// Method for deserialization of object 
+					object1 = (Demo)in.readObject(); 
+					  
+					in.close(); 
+					file.close(); 
+					  
+					System.out.println("Object has been deserialized "); 
+					System.out.println("a = " + object1.a); 
+					System.out.println("b = " + object1.b); 
+				} 
+				  
+				catch(IOException ex) 
+				{ 
+					System.out.println("IOException is caught"); 
+				} 
+				  
+				catch(ClassNotFoundException ex) 
+				{ 
+					System.out.println("ClassNotFoundException is caught"); 
+				} 
+		  
+			} 
+		} 
+		Output :
+
+		Object has been serialized
+		Object has been deserialized 
+		a = 1
+		b = geeksforgeeks
+		 
+
+		Example 2:
+
+		filter_none
+		edit
+		play_arrow
+
+		brightness_4
+		// Java code for serialization and deserialization  
+		// of a Java object 
+		import java.io.*; 
+		  
+		class Emp implements Serializable { 
+		private static final long serialversionUID = 
+										 129348938L; 
+			transient int a; 
+			static int b; 
+			String name; 
+			int age; 
+		  
+			// Default constructor 
+		public Emp(String name, int age, int a, int b) 
+			{ 
+				this.name = name; 
+				this.age = age; 
+				this.a = a; 
+				this.b = b; 
+			} 
+		  
+		} 
+		  
+		public class SerialExample { 
+		public static void printdata(Emp object1) 
+			{ 
+		  
+				System.out.println("name = " + object1.name); 
+				System.out.println("age = " + object1.age); 
+				System.out.println("a = " + object1.a); 
+				System.out.println("b = " + object1.b); 
+			} 
+		  
+		public static void main(String[] args) 
+			{ 
+				Emp object = new Emp("ab", 20, 2, 1000); 
+				String filename = "shubham.txt"; 
+		  
+				// Serialization 
+				try { 
+		  
+					// Saving of object in a file 
+					FileOutputStream file = new FileOutputStream 
+												   (filename); 
+					ObjectOutputStream out = new ObjectOutputStream 
+												   (file); 
+		  
+					// Method for serialization of object 
+					out.writeObject(object); 
+		  
+					out.close(); 
+					file.close(); 
+		  
+					System.out.println("Object has been serialized\n"
+									  + "Data before Deserialization."); 
+					printdata(object); 
+		  
+					// value of static variable changed 
+					object.b = 2000; 
+				} 
+		  
+				catch (IOException ex) { 
+					System.out.println("IOException is caught"); 
+				} 
+		  
+				object = null; 
+		  
+				// Deserialization 
+				try { 
+		  
+					// Reading the object from a file 
+					FileInputStream file = new FileInputStream 
+												 (filename); 
+					ObjectInputStream in = new ObjectInputStream 
+												 (file); 
+		  
+					// Method for deserialization of object 
+					object = (Emp)in.readObject(); 
+		  
+					in.close(); 
+					file.close(); 
+					System.out.println("Object has been deserialized\n"
+										+ "Data after Deserialization."); 
+					printdata(object); 
+		  
+					// System.out.println("z = " + object1.z); 
+				} 
+		  
+				catch (IOException ex) { 
+					System.out.println("IOException is caught"); 
+				} 
+		  
+				catch (ClassNotFoundException ex) { 
+					System.out.println("ClassNotFoundException" + 
+										" is caught"); 
+				} 
+			} 
+		} 
+		Output:
+
+		Object has been serialized
+		Data before Deserialization.
+		name = ab
+		age = 20
+		a = 2
+		b = 1000
+		Object has been deserialized
+		Data after Deserialization.
+		name = ab
+		age = 20
+		a = 0
+		b = 2000
+		Description for Output:
+		You have seen while deserializing the object the values of a and b has changed. The reason being a was marked as transient and b was static.
+		In case of transient variables:- A variable defined with transient keyword is not serialized during serialization process.This variable will be initialized with default value during deserialization. (e.g: for objects it is null, for int it is 0).
+		In case of static Variables:- A variable defined with static keyword is not serialized during serialization process.This variable will be loaded with current value defined in the class during deserialization.
+		
+9. How to handle OOM? Explain your approach.
+   Increase the memory like: java -Xmx512M
+   Possible causes:
+
+	Simple configuration issue, where the specified heap size is insufficient for the application.
+	Application is unintentionally holding references to objects, and this prevents the objects from being garbage collected.
+	Excessive use of finalizers.
+	One other potential source of this error arises with applications that make excessive use of finalizers. If a class has a finalize method, then objects of that type do not have their space reclaimed at garbage collection time
+	After garbage collection, the objects are queued for finalization, which occurs at a later time. finalizers are executed by a daemon thread that services the finalization queue. If the finalizer thread cannot keep up with the finalization queue, then the Java heap could fill up and this type of OutOfMemoryError exception would be thrown.
+	One scenario that can cause this situation is when an application creates high-priority threads that cause the finalization queue to increase at a rate that is faster than the rate at which the finalizer thread is servicing that queue.
+   
+   ================OOM Oracle page== https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/memleaks002.html============
+   One common indication of a memory leak is the java.lang.OutOfMemoryError exception. Usually, this error is thrown when there is insufficient space to allocate an object in the Java heap. In this case, The garbage collector cannot make space available to accommodate a new object, and the heap cannot be expanded further. Also, this error may be thrown when there is insufficient native memory to support the loading of a Java class. In a rare instance, a java.lang.OutOfMemoryError may be thrown when an excessive amount of time is being spent doing garbage collection and little memory is being freed.
+
+				When a java.lang.OutOfMemoryError exception is thrown, a stack trace is also printed.
+
+				The java.lang.OutOfMemoryError exception can also be thrown by native library code when a native allocation cannot be satisfied (for example, if swap space is low).
+
+				An early step to diagnose an OutOfMemoryError exception is to determine the cause of the exception. Was it thrown because the Java heap is full, or because the native heap is full? To help you find the cause, the text of the exception includes a detail message at the end, as shown in the following exceptions.
+
+				Exception in thread thread_name: java.lang.OutOfMemoryError: Java heap space
+				Cause: The detail message Java heap space indicates object could not be allocated in the Java heap. This error does not necessarily imply a memory leak. The problem can be as simple as a configuration issue, where the specified heap size (or the default size, if it is not specified) is insufficient for the application.
+				In other cases, and in particular for a long-lived application, the message might be an indication that the application is unintentionally holding references to objects, and this prevents the objects from being garbage collected. This is the Java language equivalent of a memory leak. Note: The APIs that are called by an application could also be unintentionally holding object references.
+
+				One other potential source of this error arises with applications that make excessive use of finalizers. If a class has a finalize method, then objects of that type do not have their space reclaimed at garbage collection time. Instead, after garbage collection, the objects are queued for finalization, which occurs at a later time. In the Oracle Sun implementation, finalizers are executed by a daemon thread that services the finalization queue. If the finalizer thread cannot keep up, with the finalization queue, then the Java heap could fill up and this type of OutOfMemoryError exception would be thrown. One scenario that can cause this situation is when an application creates high-priority threads that cause the finalization queue to increase at a rate that is faster than the rate at which the finalizer thread is servicing that queue.
+
+				Action: You can find more information about how to monitor objects for which finalization is pending in Monitor the Objects Pending Finalization.
+				The JConsole management tool can be used to monitor the number of objects that are pending finalization. This tool reports the pending finalization count in the memory statistics on the Summary tab pane. The count is approximate, but it can be used to characterize an application and understand if it relies a lot on finalization.
+
+				On Oracle Solaris and Linux operating systems, the jmap utility can be used with the -finalizerinfo option to print information about objects awaiting finalization.
+
+				Exception in thread thread_name: java.lang.OutOfMemoryError: GC Overhead limit exceeded
+				Cause: The detail message "GC overhead limit exceeded" indicates that the garbage collector is running all the time and Java program is making very slow progress. After a garbage collection, if the Java process is spending more than approximately 98% of its time doing garbage collection and if it is recovering less than 2% of the heap and has been doing so far the last 5 (compile time constant) consecutive garbage collections, then a java.lang.OutOfMemoryError is thrown. This exception is typically thrown because the amount of live data barely fits into the Java heap having little free space for new allocations.
+				Action: Increase the heap size. The java.lang.OutOfMemoryError exception for GC Overhead limit exceeded can be turned off with the command line flag -XX:-UseGCOverheadLimit.
+				Exception in thread thread_name: java.lang.OutOfMemoryError: Requested array size exceeds VM limit
+				Cause: The detail message "Requested array size exceeds VM limit" indicates that the application (or APIs used by that application) attempted to allocate an array that is larger than the heap size. For example, if an application attempts to allocate an array of 512 MB but the maximum heap size is 256 MB then OutOfMemoryError will be thrown with the reason Requested array size exceeds VM limit.
+				Action: Usually the problem is either a configuration issue (heap size too small), or a bug that results in an application attempting to create a huge array (for example, when the number of elements in the array is computed using an algorithm that computes an incorrect size).
+				Exception in thread thread_name: java.lang.OutOfMemoryError: Metaspace
+				Cause: Java class metadata (the virtual machines internal presentation of Java class) is allocated in native memory (referred to here as metaspace). If metaspace for class metadata is exhausted, a java.lang.OutOfMemoryError exception with a detail MetaSpace is thrown. The amount of metaspace that can be used for class metadata is limited by the parameter MaxMetaSpaceSize, which is specified on the command line. When the amount of native memory needed for a class metadata exceeds MaxMetaSpaceSize, a java.lang.OutOfMemoryError exception with a detail MetaSpace is thrown.
+				Action: If MaxMetaSpaceSize, has been set on the command-line, increase its value. MetaSpace is allocated from the same address spaces as the Java heap. Reducing the size of the Java heap will make more space available for MetaSpace. This is only a correct trade-off if there is an excess of free space in the Java heap. See the following action for Out of swap space detailed message.
+				Exception in thread thread_name: java.lang.OutOfMemoryError: request size bytes for reason. Out of swap space?
+				Cause: The detail message "request size bytes for reason. Out of swap space?" appears to be an OutOfMemoryError exception. However, the Java HotSpot VM code reports this apparent exception when an allocation from the native heap failed and the native heap might be close to exhaustion. The message indicates the size (in bytes) of the request that failed and the reason for the memory request. Usually the reason is the name of the source module reporting the allocation failure, although sometimes it is the actual reason.
+				Action: When this error message is thrown, the VM invokes the fatal error handling mechanism (that is, it generates a fatal error log file, which contains useful information about the thread, process, and system at the time of the crash). In the case of native heap exhaustion, the heap memory and memory map information in the log can be useful. For more information about understanding the fatal error log file, see Appendix A.
+				If this type of the OutOfMemoryError exception is thrown, you might need to use troubleshooting utilities on the operating system to diagnose the issue further. For more information about tools available for various operating systems, see Native Operating System Tools.
+
+				Exception in thread thread_name: java.lang.OutOfMemoryError: Compressed class space
+				Cause: On 64-bit platforms a pointer to class metadata can be represented by a 32-bit offset (with UseCompressedOops). This is controlled by the command line flag UseCompressedClassPointers (on by default). If the UseCompressedClassPointers is used, the amount of space available for class metadata is fixed at the amount CompressedClassSpaceSize. If the space needed for UseCompressedClassPointers exceeds CompressedClassSpaceSize, a java.lang.OutOfMemoryError with detail Compressed class space is thrown.
+				Action: Increase CompressedClassSpaceSize to turn off UseCompressedClassPointers. Note: There are bounds on the acceptable size of CompressedClassSpaceSize. For example -XX: CompressedClassSpaceSize=4g, exceeds acceptable bounds will result in a message such as
+				CompressedClassSpaceSize of 4294967296 is invalid; must be between 1048576 and 3221225472.
+
+				Note: There is more than one kind of class metadata - klass metadata and other metadata. Only klass metadata is stored in the space bounded by CompressedClassSpaceSize. The other metadata is stored in Metaspace.
+
+				Exception in thread thread_name: java.lang.OutOfMemoryError: reason stack_trace_with_native_method
+				Cause: If the detail part of the error message is "reason stack_trace_with_native_method" and a stack trace is printed in which the top frame is a native method, then this is an indication that a native method has encountered an allocation failure. The difference between this and the previous message is that the allocation failure was detected in a Java Native Interface (JNI) or native method rather than in the JVM code.
+				Action: If this type of the OutOfMemoryError exception is thrown, you might need to use native utilities of the OS to further diagnose the issue. For more information about tools available for various operating systems, see Native Operating System Tools.

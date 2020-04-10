@@ -1,0 +1,46 @@
+Java8::
+1. Explain the functional Interface
+2. Explain the Lambda expression and its usage.
+2. Explain the difference between Stream and Colletion
+3. Write a program to sort the hashmap based on value
+4. Explain Concurrent HashMap changes (30 method added in java 8 in concrrent hashmap
+Design:
+1. Design Lift Maintenance system.
+2. Design Resource bunder to read properties from properties file, yaml, and DB.
+Algo:
+1. What is the time complexity of Binary Search and explain how.
+2. What will be time complexity of TreeMap when contains key method is used. and explain how.
+3. Write a program to detect loop in linked list.
+4. Write a program to rotate the array.
+5. How to find the height of tree in non-recursive manner.
+DB:
+1. What is the difference betbeen truncate and delete.
+TransactionManagement::
+1. How to handle transaction between multiple microservices
+2. What is the difference between Hibernate Transaction and Spring Transaction
+DP :
+1. Explain Singleton desing Pattern, which one is best and why?
+2. Expalin Real life scenario where you used Decorator and why?
+3.
+Hibernate:
+1. Difference between update and merge
+Docker and Kubernetes:
+1. Explain Kubernetes architecture
+2. How to do ssh in kubernetes container
+3. How to restart the container in docker
+4. Expalin the difference between save and export in docker command.
+5. Difference between docker and swarm.
+Spring and MicroServices:
+1. Explain the difference between DI and IOC.
+2. Explain the difference between @Component and @Service
+3. Explain the Microservice Architecture
+4. How do you handle Distributed logging.
+5. How to convert Scheduler based monolithic application to microservice.
+Kafka:
+1. Explain the difference between Kafka and JMS
+2. Explain the Advantages and Disadvantages of Kafka.
+Cache:
+1. Have you used Cache which one and why?
+Other
+1. How to trace process in unix.
+2. How to handler OOM, explain your approach.

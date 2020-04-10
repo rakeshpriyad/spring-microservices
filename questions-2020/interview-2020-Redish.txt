@@ -1,0 +1,3 @@
+Cache:
+	1. Have you used Cache which one and why?
+	2. Explain the difference between Ehcase and Redish

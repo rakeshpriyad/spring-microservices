@@ -1,0 +1,6 @@
+Performance Management:
+	1. How to trace process in unix.
+	2. How to handler OOM, explain your approach.
+	3. if the web page loading take much time around 5 min, what will be the approach to solve it.
+	4. What are the things to take care if part of code is identified as causing issue.
+	

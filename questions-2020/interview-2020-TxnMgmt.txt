@@ -1,0 +1,4 @@
+TransactionManagement::
+	1. How to handle transaction between multiple microservices
+	2. What is the difference between Hibernate Transaction and Spring Transaction
+	3. How to handler MDB transaction if MDB is receiving the data from the queue then publishing it to another queue and saving into db and sending mail (how to maintain atomicity).
