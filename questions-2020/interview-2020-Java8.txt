@@ -4,48 +4,156 @@ Java8::
 	3. Explain the difference between Stream and Colletion
 	4. Write a program to sort the hashmap based on value
 	5. Explain Concurrent HashMap changes (30 method added in java 8 in concrrent hashmap)
+	6. Explain Diamond problem / What is the purpose of Default method (in interface)
+		To solve the diamond problem
+		it can be solve by overriding the default method or interface.super.defaultmethod
+		Example 
+		interface A{
+		public void one(){
+			System.out.println("one");
+		}
+		}
+		
+		interface B{
+		public void one(){
+			System.out.println("one");
+		}
+		}
+		public class C implements A, B{
+			public void test(){
+				System.out.println("one");
+			}
+		}
+		//Above class will give compile time exception
+		to solve this
+		
+		public class C implements A, B{
+			public void test(){
+				System.out.println("one");
+			}
+			public void one(){
+				System.out.println("overrided default method one");
+			}
+		}
+		
+		OR
+		
+		public class C implements A, B{
+			public void test(){
+				System.out.println("one");
+			}
+			public void one(){
+					A.super.one();
+			}
+		}
+		
+	7. Hot to Convert List to Map
+		package com.test.java8
 
-DB:
-	1. What is the difference betbeen truncate and delete.
-TransactionManagement::
-	1. How to handle transaction between multiple microservices
-	2. What is the difference between Hibernate Transaction and Spring Transaction
-	3. How to handler MDB transaction if MDB is receiving the data from the queue then publishing it to another queue and saving into db and sending mail (how to maintain atomicity).
-DP :
-	1. Explain Singleton desing Pattern, which one is best and why?
-	2. Expalin Real life scenario where you used Decorator and why?
-	3. Explain the Observer Design pattern
-	4. Explainn the Template Design Pattern
-Hibernate:
-1. Difference between update and merge
+		public class Hosting {
 
-Docker and Kubernetes:
-	1. Explain Kubernetes architecture
-	2. How to do ssh in kubernetes container
-	3. How to restart the container in docker
-	4. Expalin the difference between save and export in docker command.
-	5. Difference between docker and swarm.
-Spring and MicroServices:
-	1. Explain the difference between DI and IOC.
-	2. Explain the difference between @Component and @Service
-	3. Explain the Microservice Architecture
-	4. How do you handle Distributed logging.
-	5. How to convert Scheduler based monolithic application to microservice.
-	6. if there is a singlton bean hodling prototype how will it behave and what will be the approach to fix it.
-	7. if we have monolithic application how to convert it to microservice, key things to take care while converting it to microservice
-	8. Explain the distributed logging management.
-	9. Explain ELK (Elastic search, Logstash and Kibana)
-	10. How do you deploy microservice in Kubernetes
-	11. 
-Kafka:
-	1. Explain the difference between Kafka and JMS
-	2. Explain the Advantages and Disadvantages of Kafka.
-Cache:
-	1. Have you used Cache which one and why?
-	2. Explain the difference between Ehcase and Redish
-Performance Management:
-	1. How to trace process in unix.
-	2. How to handler OOM, explain your approach.
-	3. if the web page loading take much time around 5 min, what will be the approach to solve it.
-	4. What are the things to take care if part of code is identified as causing issue.
-	5. 
+			private int Id;
+			private String name;
+			private long websites;
+
+			public Hosting(int id, String name, long websites) {
+				Id = id;
+				this.name = name;
+				this.websites = websites;
+			}
+
+			//getters, setters and toString()
+		}
+		
+		package com.test.java8
+
+		import java.util.ArrayList;
+		import java.util.List;
+		import java.util.Map;
+		import java.util.stream.Collectors;
+
+		public class TestListMap {
+
+			public static void main(String[] args) {
+
+				List<Hosting> list = new ArrayList<>();
+				list.add(new Hosting(1, "liquidweb.com", 80000));
+				list.add(new Hosting(2, "linode.com", 90000));
+				list.add(new Hosting(3, "digitalocean.com", 120000));
+				list.add(new Hosting(4, "aws.amazon.com", 200000));
+				list.add(new Hosting(5, "mkyong.com", 1));
+
+				// key = id, value - websites
+				Map<Integer, String> result1 = list.stream().collect(
+						Collectors.toMap(Hosting::getId, Hosting::getName));
+
+				System.out.println("Result 1 : " + result1);
+
+				// key = name, value - websites
+				Map<String, Long> result2 = list.stream().collect(
+						Collectors.toMap(Hosting::getName, Hosting::getWebsites));
+
+				System.out.println("Result 2 : " + result2);
+
+				// Same with result1, just different syntax
+				// key = id, value = name
+				Map<Integer, String> result3 = list.stream().collect(
+						Collectors.toMap(x -> x.getId(), x -> x.getName()));
+
+				System.out.println("Result 3 : " + result3);
+			}
+		}
+
+		Output
+
+	Result 1 : {1=liquidweb.com, 2=linode.com, 3=digitalocean.com, 4=aws.amazon.com, 5=mkyong.com}
+	Result 2 : {liquidweb.com=80000, mkyong.com=1, digitalocean.com=120000, aws.amazon.com=200000, linode.com=90000}
+	Result 3 : {1=liquidweb.com, 2=linode.com, 3=digitalocean.com, 4=aws.amazon.com, 5=mkyong.com}
+	
+	if there is duplicate key (name s=is duplicae ) then error will be thrown illegalstateexception duplicate key, To solve this
+	Map<String, Long> result1 = list.stream().collect(
+                Collectors.toMap(Hosting::getName, Hosting::getWebsites,
+                        (oldValue, newValue) -> oldValue
+                )
+        );
+	
+	8. Write a program to print the fibonacii number.
+	Stream.iterate(new int[]{0, 1}, t -> new int[]{t[1], t[0] + t[1]})
+		.limit(10)
+		.map(t -> t[0])
+		.forEach(x -> System.out.println(x));
+		
+	 Join with commas.
+
+		String collect = Stream.iterate(new int[]{0, 1}, t -> new int[]{t[1], t[0] + t[1]})
+                .limit(10)
+                .map(t -> t[0])
+                .map(String::valueOf) // convert to string
+                .collect(Collectors.joining(", "));
+
+        System.out.println("Result : " + collect);
+		
+		===================================fibonacii=========================
+		import java.util.List;
+		import java.util.stream.Stream;
+
+		import static java.util.stream.Collectors.toList;
+
+		public class Fibonacci {
+
+			public static List<Integer> getFibonacci(int series) {
+				return Stream.iterate(new int[]{0, 1}, t -> new int[]{t[1], t[0] + t[1]})
+						.limit(series)
+						.map(n -> n[0])
+						.collect(toList());
+			}
+
+			public static void main(String[] args) {
+
+				List<Integer> fibonacci = getFibonacci(10);
+				fibonacci.forEach(x -> System.out.println(x));
+
+			}
+
+		}
+		=====================================================================
