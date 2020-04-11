@@ -1,10 +1,117 @@
 Java8::
-	1. Explain the functional Interface
-	2. Explain the Lambda expression and its usage.
-	3. Explain the difference between Stream and Colletion
-	4. Write a program to sort the hashmap based on value
-	5. Explain Concurrent HashMap changes (30 method added in java 8 in concrrent hashmap)
-	6. Explain Diamond problem / What is the purpose of Default method (in interface)
+1. What New Features Were Added in Java 8?
+		Java 8 ships with several new features but the most significant are the following:
+
+		1.Lambda Expressions - a new language feature allowing treating actions as objects
+		2. Method References - enable defining Lambda Expressions by referring to methods directly using their names
+		3. Optional - special wrapper class used for expressing optionality
+		4. Functional Interface – an interface with maximum one abstract method, implementation can be provided using a Lambda Expression
+		5. Default methods - give us the ability to add full implementations in interfaces besides abstract methods
+		6. Stream API - a special iterator class that allows processing collections of objects in a functional manner
+		7. Date API - an improved, immutable JodaTime-inspired Date API
+		8. Completeable Future
+		9. Improvement in ConcurrentHashMap
+		10. Function, ByFunction, Supplier, Consumer, Predicates
+		11. Spliterator 
+		12. StampdedLock
+		13. MetaSpace
+		14. ConcurrentHa
+
+2. What is the difference between PermGenSpace and MetaSpace?
+
+	In jdk 8 onwards PermGenSpace is removed. Earlier PermGenSpace is used for storing the metadata. Metadata means storing the information about classes like bytecodes, names and JIT information.
+	Java classes metadata now stored in native heap and this space is called MetaSpace. Metaspace grows automatically by default and will be garbage collected.
+
+	So the major difference between PermGenSpace and MetaSpace is that PermGenSpace was fixed in size and did not grow automatically, but MetaSpace does not have any size constraints.
+
+	JDK8: Metaspace
+	In JDK 8, classes metadata is now stored in the native heap and this space is called Metaspace. There are some new flags added for
+	Metaspace in JDK 8:
+
+	-XX:MetaspaceSize=<NNN>
+	where <NNN> is the initial amount of space(the initial 	high-water-mark) allocated for class metadata (in bytes) that may induce a 	garbage collection to unload classes. The amount is approximate. After the
+	high-water-mark is first reached, the next high-water-mark is managed by the garbage collector
+	-XX:MaxMetaspaceSize=<NNN>
+	where <NNN> is the maximum amount of space to be allocated for class metadata (in bytes). This flag can be used to limit the amount of space allocated for class metadata. This value is approximate. By default there is no limit set.
+	-XX:MinMetaspaceFreeRatio=<NNN>
+	where <NNN> is the minimum percentage of class metadata capacity free after a GC to avoid an increase in the amount of space (high-water-mark) allocated for class metadata that will induce a garbage collection.
+	-XX:MaxMetaspaceFreeRatio=<NNN>
+	where <NNN> is the maximum percentage of class metadata capacity free after a GC to avoid a reduction in the amount of space (high-water-mark) allocated for class metadata that will induce a garbage collection.
+	By default class
+	metadata allocation is only limited by the amount of available native memory. We can use the new option MaxMetaspaceSize to limit the amount of native memory
+	used for the class metadata. It is analogous to MaxPermSize. A garbage collection is induced to collect the dead classloaders
+
+3. Explain the functional Interface
+In simple words, Functional interface has exactly one abstract method. A compile time error is thrown if an interface declaration is annotated with @FunctionalInterface  but is not, in fact, a functional interface.
+Example of Functional Interface
+Already there are many functional interfaces in java. For example, Comparable and Runnable. Functional interface does not count default methods.
+
+
+4. Explain the Lambda expression and its usage.
+		According to Oracle docs, 	Lambda expressions are the method without name i.e Anonymous method. In other words, Lambda expression is a function that can be passed around and referenced as an object.
+
+	For example:
+
+	Structure of Lambda Expression
+	A lambda expression consists of three parts :
+	a. Parameter List
+	b. Lambda symbol ->
+	c. Expression
+	(Parameter List) ->{expression;} 
+
+5. Explain the difference between Stream and Colletion
+	+---------------------------------------------------------+--------------------------------------------------------
+	Collections							 					  | Streams
+	+---------------------------------------------------------+--------------------------------------------------------
+	Collections are mainly used to store and group the data.  |Streams are mainly used to perform operations on data.
+	+---------------------------------------------------------+--------------------------------------------------------
+	You can add or remove elements from collections. 		  | You can’t add or remove elements from streams.
+	+---------------------------------------------------------+--------------------------------------------------------
+	Collections have to be iterated externally. 			  | Streams are internally iterated.
+	+------------------------------------------------------------------------------------------------------------------
+	Collections can be traversed multiple times. 			  | Streams are traversable only once.
+	+---------------------------------------------------------+--------------------------------------------------------
+	Collections are eagerly constructed. 					  | Streams are lazily constructed.
+	+---------------------------------------------------------+--------------------------------------------------------
+	Ex : List, Set, Map…				 					  | filtering, mapping, matching…
+	+---------------------------------------------------------+--------------------------------------------------------
+6. Write a program to sort the hashmap based on value
+Map<String, Integer> sorted = budget .entrySet() .stream().sorted(comparingByValue())
+.collect( toMap(e -> e.getKey(), e -> e.getValue(), (e1, e2) -> e2, LinkedHashMap::new));
+
+budget.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue())) 
+.collect( toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e2, LinkedHashMap::new));
+
+
+
+7. Explain Concurrent HashMap changes (30 method added in java 8 in concrrent hashmap)
+	New methods in java.util.concurrent.ConcurrentHashMap
+	The Collections Framework has undergone a major revision in Java 8 to add aggregate operations based on the newly added streams facility and lambda expressions. As a result, the ConcurrentHashMap class introduces over 30 new methods in this release. These include various forEach methods (forEach, forEachKey, forEachValue, and forEachEntry), search methods (search, searchKeys, searchValues, and searchEntries) and a large number of reduction methods (reduce, reduceToDouble, reduceToLong etc.)
+
+	Other miscellaneous methods (mappingCount and newKeySet) have been added as well. As a result of the JDK 8 changes, ConcurrentHashMaps (and classes built from them) are now more useful as caches. These changes include methods to compute values for keys when they are not present, plus improved support for scanning (and possibly evicting) entries, as well as better support for maps with large numbers of elements.
+
+	ForEach:
+	map.forEach((k, v) -> System.out.println(k + "contains " + v.size() + " articles")); 
+	There are also a versions of the forEach where we can add a transformer. The transformer transforms the data before sending it to the Consumer — pretty much like executing a map function on the key-value pair before passing it along.
+	 map.forEach(1, (k, v) -> "There is " + v.size() + " articles about " + k, System.out::println);
+
+	search:
+	map.search(1, (k, v) -> {  
+	  return v.size() > 10 ? return k : null;
+	});
+	The first parameter is the parallelism threshold that we’ve discussed earlier, while the next argument is the function describing our search.
+
+	searchKeys is one variant — taking a function with only the key as a parameter.
+
+	map.searchKeys(1, key -> key.equals("Java") ? key : null);  
+
+	We also got searchValues — taking a function only with the value as a parameter.
+
+	To see how this works, let's create a search function that finds the first list of articles that is not empty, before returing the first element in this list.
+
+	map.searchValues(1, v -> !v.isEmpty() ? v.get(0) : null);   
+
+8. Explain Diamond problem / What is the purpose of Default method (in interface)
 		To solve the diamond problem
 		it can be solve by overriding the default method or interface.super.defaultmethod
 		Example 
@@ -47,7 +154,7 @@ Java8::
 			}
 		}
 		
-	7. Hot to Convert List to Map
+9. Hot to Convert List to Map
 		package com.test.java8
 
 		public class Hosting {
@@ -117,7 +224,7 @@ Java8::
                 )
         );
 	
-	8. Write a program to print the fibonacii number.
+10. Write a program to print the fibonacii number.
 	Stream.iterate(new int[]{0, 1}, t -> new int[]{t[1], t[0] + t[1]})
 		.limit(10)
 		.map(t -> t[0])
@@ -157,3 +264,87 @@ Java8::
 
 		}
 		=====================================================================
+		
+11. Explain the G1 Garbage collector
+	JDK7: G1 and PermGen
+	With G1 collector, PermGen is collected only at a Full GC which is a stop-the-world (STW) GC. If G1 is running optimally then it does not do Full GCs. G1 invokes the Full GCs only when the PermGen is full or when the application does allocations faster
+	than G1 can concurrently collect garbage.
+
+	With CMS garbage collector, we can use option
+	-XX:+CMSClassUnloadingEnabled to collect PermGen space in the CMS concurrent cycle. There is no equivalent option for G1. G1 only collects PermGen during the Full stop-the-world GCs.
+
+	We can use options PermSize and MaxPermSize to tune the PermGen space size according to the application needs.
+12. Explain Stamped Lock
+		Java 8 introduces the concept of Stamped Locks. Prior to this, we had Reentrant ReadWrite locks as the alternative to avoid full synchronisation. While Reentrant locks still remain, Stamped locks are a new addition to the java concurrency family.
+		Stamped Locks cannot be re-entrant, which essentially means, that if we acquire a read stamped lock, and we invoke another piece of code, we cannot acquire another write lock within its scope.
+		On the other hand, Reentrant locks allowed programmers to acquire multiple read locks, as long as there were no write locks. It was later discovered, that if not used carefully – Reentrant RW locks can lead to thread starvation for the write lock under loaded conditions – which can lead to severe performance issues.
+		Why are they called “Stamped” ?
+		There are two elements of a stamped lock, namely – the lock version and locking mode. The lock version is also known as a stamp, and is essentially a value of type “long” returned every time a lock is acquired.
+		There are methods available which “try” to acquire a lock – used for loosely synchronised code segments, and for these methods the stamp value returned can be “zero”, if the lock acquisition fails.
+		Example -
+		public long tryConvertToWriteLock(long stamp)
+		Locking Modes
+		There are three locking modes available for synchronisation granularity – READ, WRITE and OPTIMISTIC READ locks.
+		Write Locks
+		The writeLock() method after acquiring the lock, returns a stamp that can be used in the method unlockWrite(long) to release the lock. When the lock is held in write mode, no read locks may be obtained, and all optimistic read validations will fail.
+		Read Locks
+		The readLock() method after acquiring the lock, returns a stamp that can be used in the method unlockRead(long) to release the lock.
+		Optimistic Read Locks
+		This locking mode can be visualised as an “advanced booking attempt” for a read lock – which may or may not be granted.
+		The tryOptimisticRead() method returns a stamp only if the lock is not currently held in write mode.
+		The validate(long) method returns true if the lock has not been acquired in write mode since obtaining a given stamp.
+		However, if the write lock has been acquired since – the optimistic read fails.
+		Example -
+		long stamp = lock.tryOptimisticRead();
+		if (!lock.validate(stamp)) {
+		stamp = lock.readLock();
+		try {
+		this.value = newValue;
+		} finally {
+		lock.unlockRead(stamp);
+		}
+		}
+		For cases where the read locks are needed for very short segments, optimistic read lock acquisition can help improve performance.
+		However, this has to be used with caution as the write threads can change the field values and cause logical issues in the code.
+		To be assured of thread safe behaviour, read locks should be used.
+		Conditional Locking & Conversion
+		Stamped Lock APIs also allow for conditional locking by using the “try” methods.
+		In this process, it is possible to interchange read lock stamps to writes and vice versa. The following methods are available -
+		public long tryConvertToWriteLock(long stamp)
+		If the stamp represents a write lock, then it is simply returned. If it represents a read lock, and the write lock is available, the read lock is released and a write stamp is returned. If the stamp represents an optimistic read lock, then a write stamp is returned only if immediately available. This method returns zero in all other cases.
+		public long tryConvertToReadLock(long stamp)
+		If the stamp represents a write lock, releases the lock and obtains a read lock. If the stamp represents a read lock, then it is returned. If the stamp is for an optimistic read lock, then a read lock is acquired and a read stamp is returned. This method returns zero in all other cases when the lock cannot be acquired.
+		public long tryConvertToOptimisticRead(long stamp)
+		If the stamp represents holding a lock, then it is released and an observation stamp is returned. If the stamp represents an optimistic read, then it is returned if its validation is successful. This method returns zero in all other cases.
+		Time Bound Locking
+		The stamped lock can also accept a guard timer – which would “wait” for a certain amount if time to acquire a lock.
+		This is useful for cases where we do not want all our threads to block on a code segment which is held up somewhere, for eg. Socket I/O or File I/O.
+		In order to guard against such situations, the following methods are provided -
+		public long tryReadLock(long time,TimeUnit unit) InterruptedException
+		Non-exclusively acquires the lock if it is available within the given time and the current thread has not been interrupted. Behavior under timeout and interruption matches that specified for method Lock.tryLock(long,TimeUnit).
+		Parameters:
+		time – the maximum time to wait for the lock
+		unit – the time unit of the time argument
+		Returns:
+		A stamp that can be used to unlock or convert mode, or zero if the lock is not available
+		Throws:
+		InterruptedException – if the current thread is interrupted before acquiring the lock
+		On the same lines the “tryWriteLock” method is also available with a similar signature -
+		public long tryWriteLock(long time,TimeUnit unit) throws InterruptedException
+		Unlocking in exception conditions
+		There may be situations, where we need to release the read and write locks without the need of a stamp value.
+		This would be needed especially on exceptions; where the stamp value may not be available.
+		For such cases, the “tryUnlock” method is available without the need for specifying a stamp value.
+		public boolean tryUnlockWrite()
+		public boolean tryUnlockRead()
+		Blocking vs Graceful Locking Behavior
+		If we review the stamped lock methods, it is seen that a wide variety of locking behaviour is provided.
+		For example, read locks can be acquired unconditionally in a blocking manner by invoking the method public long readLock()
+		Then we have the method tryReadLock, which does not block, and acquires the non-exclusive lock if it is available immediately, else returns zero.
+		Furthermore, we have optimistic locking where the lock stamp can be validated at a later point of time to check for the presence of a write lock before the non-exclusive read lock can be acquired.
+		Finally, we have the timed locks – where we can attribute a timeout value for exclusive read lock access.
+		This allows the developer to fine tune the locking behaviour of their application, provided that they are in full control of concurrent access semantics.
+		The same granularity exists for write locks, which also follow a similar method signature.
+		Conclusion
+		Developers should gradually move to stamped locks if they are using Reentrant locks.
+		Stamped locks need to be used with utmost care, so that the concurrency semantics of the variables is not compromised, and logical multi-threading errors are not encountered.
