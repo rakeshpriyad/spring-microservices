@@ -1,15 +1,21 @@
 Spring and MicroServices:
-	1. Explain the difference between DI and IOC.
-	2. Explain the difference between @Component and @Service
-	3. Explain the Microservice Architecture
-	4. How do you handle Distributed logging.
-	5. How to convert Scheduler based monolithic application to microservice.
-	6. if there is a singlton bean hodling prototype how will it behave and what will be the approach to fix it.
-	7. if we have monolithic application how to convert it to microservice, key things to take care while converting it to microservice
-	8. Explain the distributed logging management.
-	9. Explain ELK (Elastic search, Logstash and Kibana)
-	10. How do you deploy microservice in Kubernetes
-	11. 
+0.	Explain the difference between Api Gateway and Service Discovery:
+	The Services gateway (a.k.a. API gateway) is receiving requests from the clients. It is the (single) service that the clients see. But it doesn't know by itself how to do what the clients want so it must forward the request to another service. It inspects the URL and extracts the name of the service that will actually serve the request, the backend service. That backend service may be located on a different machine. It may have a dynamic address or port, that may change from time to time, from different reasons (nodes fail, new nodes are added to the network etc).
+	So, the gateway doesn't know where to forward the request. This is the job of the Service-discovery service (Eureka). Eureka knows on which node is located and at which address and port every service is listening for requests. The gateway is asking Eureka where it can find the backend service (by sending it only its name). After Eureka is responding, the gateway is forwarding the request to that address.
+
+	https://github.com/piomin/sample-spring-microservices-kubernetes
+	GCP: https://github.com/TechPrimers/k8s-spring-boot-example
+1. Explain the difference between DI and IOC.
+2. Explain the difference between @Component and @Service
+3. Explain the Microservice Architecture
+4. How do you handle Distributed logging.
+5. How to convert Scheduler based monolithic application to microservice.
+6. if there is a singlton bean hodling prototype how will it behave and what will be the approach to fix it.
+7. if we have monolithic application how to convert it to microservice, key things to take care while converting it to microservice
+8. Explain the distributed logging management.
+9. Explain ELK (Elastic search, Logstash and Kibana)
+10. How do you deploy microservice in Kubernetes
+ 
 11. Explain Blue-Green Deployment Technique
 		Answer:
 		Blue-green deployment is a technique that reduces downtime and risk by running two identical production environments called Blue and Green. At any time, only one of the environments is live, with the live environment serving all production traffic. For this example, Blue is currently live and Green is idle.
