@@ -10,3 +10,61 @@ Spring and MicroServices:
 	9. Explain ELK (Elastic search, Logstash and Kibana)
 	10. How do you deploy microservice in Kubernetes
 	11. 
+11. Explain Blue-Green Deployment Technique
+		Answer:
+		Blue-green deployment is a technique that reduces downtime and risk by running two identical production environments called Blue and Green. At any time, only one of the environments is live, with the live environment serving all production traffic. For this example, Blue is currently live and Green is idle.
+		As you prepare a new version of your software, deployment and the final stage of testing takes place in the environment that is not live: in this example, Green. Once you have deployed and fully tested the software in Green, you switch the router so all incoming requests now go to Green instead of Blue. Green is now live, and Blue is idle.
+		This technique can eliminate downtime due to application deployment. In addition, blue-green deployment reduces risk: if something unexpected happens with your new version on Green, you can immediately roll back to the last version by switching back to Blue.
+		
+12. What's the difference between a blue/green deployment and a rolling deployment?
+Answer:
+		In Blue Green Deployment, you have TWO complete environments. One is Blue environment which is running and the Green environment to which you want to upgrade. Once you swap the environment from blue to green, the traffic is directed to your new green environment. You can delete or save your old blue environment for backup until the green environment is stable.
+		In Rolling Deployment, you have only ONE complete environment. The code is deployed in the subset of instances of the same environment and moves to another subset after completion.		
+13. What are the differences between continuous integration, continuous delivery, and continuous deployment?
+		Answer:
+		Developers practicing continuous integration merge their changes back to the main branch as often as possible. By doing so, you avoid the integration hell that usually happens when people wait for release day to merge their changes into the release branch.
+		Continuous delivery is an extension of continuous integration to make sure that you can release new changes to your customers quickly in a sustainable way. This means that on top of having automated your testing, you also have automated your release process and you can deploy your application at any point of time by clicking on a button.
+		Continuous deployment goes one step further than continuous delivery. With this practice, every change that passes all stages of your production pipeline is released to your customers. There's no human intervention, and only a failed test will prevent a new change to be deployed to production.
+14. What do you know about serverless model?
+		Answer:
+		Serverless refers to a model where the existence of servers is hidden from developers. It means you no longer have to deal with capacity, deployments, scaling and fault tolerance and OS. It will essentially reducing maintenance efforts and allow developers to quickly focus on developing codes.
+		Examples are:
+		Amazon AWS Lambda
+		Azure Functions		
+		Cloud Function
+15. What are the features of Microservices?
+		Answer:  DCABCADR
+		Decoupling – Services within a system are largely decoupled. So the application as a whole can be easily built, altered, and scaled
+		Componentization – Microservices are treated as independent components that can be easily replaced and upgraded
+		Autonomy – Developers and teams can work independently of each other, thus increasing speed
+		Business Capabilities – Microservices are very simple and focus on a single capability
+		Continous Delivery – Allows frequent releases of software, through systematic automation of software creation, testing, and approval
+		Agility – Microservices support agile development. Any new feature can be quickly developed and discarded again
+		Decentralized Governance – The focus is on using the right tool for the right job. That means there is no standardized pattern or any technology pattern. Developers have the freedom to choose the best useful tools to solve their problems
+		Responsibility – Microservices do not focus on applications as projects. Instead, they treat applications as products for which they are responsible
+16. What is the difference between Monolithic, SOA and Microservices Architecture?
+
+17. What are main differences between Microservices and Monolithic Architecture?
+Answer:
+		Microservices::
+		Service Startup is fast
+		Microservices are loosely coupled architecture.
+		Changes done in a single data model does not affect other Microservices.
+		Microservices focuses on products, not projects
+
+		Monolithic Architecture::
+		Service startup takes time
+		Monolithic architecture is mostly tightly coupled.
+		Any changes in the data model affect the entire database
+		Monolithic put emphasize over the whole project
+18. What are the standard patterns of orchestrating microservices?		
+		As we start to model more and more complex logic, we have to deal with the problem of managing business processes that stretch across the boundary of individual services.
+		With ORCHESTRATION, we rely on a central brain to guide and drive the process, much like the conductor in an orchestra. The orchestration style corresponds more to the SOA idea of orchestration/task services. For example we could wrap the business flow in its own service. Where the proxy orchestrates the interaction between the microservices like shown in the below picture.
+		With CHOREOGRAPHY, we inform each part of the system of its job, and let it work out the details, like dancers all find- ing their way and reacting to others around them in a ballet. The choreography style corresponds to the dumb pipes and smart endpoints mentioned by Martin Fowler's. That approach is also called the domain approach and is using domain events, where each service publish events regarding what have happened and other services can subscribe to those events.
+		
+19. What are smart endpoints and dumb pipes?
+		Smart endpoints just meaning actual business rules and any other validations happens behind those endpoints which are not visible to anyone to the consumers of those endpoints think of it as a place where actual Magic happens.
+		Dumb pipelines means any communication means where no further actions e.g validations are taken place, it simply carries the data across that particular channel and it may also be replaceable if need be. The infrastructure chosen is typically dumb (dumb as in acts as a message router only). It just means that routing is the only function the pipes should be doing.		
+20. What is Canary Releasing?		
+21. What is the most accepted transaction strategy for microservices
+23. Why would one use sagas over 2PC and vice versa?
