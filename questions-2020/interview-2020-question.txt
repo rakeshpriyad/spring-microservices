@@ -1,5 +1,5 @@
 Java8::
-	1.  Explain the functional Interface
+	1. Explain the functional Interface
 	2. Explain the Lambda expression and its usage.
 	3. Explain the difference between Stream and Colletion
 	4. Write a program to sort the hashmap based on value
@@ -21,6 +21,10 @@ Java8::
 	 
 	future.get();
 	10. Advantages and disadvantages of CompletableFuture
+	11. Explain Stamped lock
+	12. Write a program in java8 for fibonecii series.
+	13. Explain MetaSpace in java8
+	14. 
 	
 Design:
 	1. Design Lift Maintenance system.

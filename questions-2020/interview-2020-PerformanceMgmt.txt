@@ -1,6 +1,35 @@
 Performance Management:
 	1. How to trace process in unix.
+	
+	strace need to be installed.
+	sudo strace -p 3569
+	Get Summary of Linux Process
+	sudo strace -c -p 3569
+	Trace Linux Process PID
+	If a process is already running, you can trace it by simply passing its PID as follows; this will fill your screen with continues output that shows system calls being made by the process, to end it, press
+
+	tusc also can be used to trace unix process
+	tusc <pid>
+	tusc 3569
+	
 	2. How to handler OOM, explain your approach.
+	
+	https://stackify.com/java-memory-leaks-solutions/
+	https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/memleaks002.html
+	https://www.geeksforgeeks.org/understanding-outofmemoryerror-exception-java/
+	https://airbrake.io/blog/java-exception-handling/outofmemoryerror
+	
+	
+	
+	Tools: 
+		eclipse Memory analyser
+		visualgc
+		visualvm
+		JConsole
+		JavaMbean
+		
+	
 	3. if the web page loading take much time around 5 min, what will be the approach to solve it.
 	4. What are the things to take care if part of code is identified as causing issue.
-	
+	https://www.baeldung.com/java-memory-leaks
+	https://medium.com/@ankit.sinhal/avoid-memory-leaks-reference-afd0e9dbb213
