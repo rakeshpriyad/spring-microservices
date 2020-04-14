@@ -1,4 +1,4 @@
-Updated DB and algo
+Updated DB and algo, Sys Design
 Java8::
 	1. Explain the functional Interface
 	2. Explain the Lambda expression and its usage.
@@ -25,11 +25,12 @@ Java8::
 	11. Explain Stamped lock
 	12. Write a program in java8 for fibonecii series.
 	13. Explain MetaSpace in java8
-	14. 
 	
 Design:
-	1. Design Lift Maintenance system.
+	1. Design Lift Maintenance system (Elevator management).
 	2. Design Resource bunder to read properties from properties file, yaml, and DB.
+	3. Design LRU cache
+	
 Algo:
 	1. What is the time complexity of Binary Search and explain how.
 	2. What will be time complexity of TreeMap when contains key method is used. and explain how.
