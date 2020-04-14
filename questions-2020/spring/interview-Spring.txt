@@ -1,0 +1,180 @@
+1. Mention the advantages of Spring Boot
+	Provides auto-configuration to load a set of default configuration for a quick start of the application
+	Creates stand-alone applications with a range of non-functional features that are common to large classes of projects
+	It comes with embedded tomcat, servlet containers jetty to avoid the usage of WAR files
+	Spring Boot provides an opinionated view to reduce the developer effort and simplify maven configurations
+	Provides CLI tool to develop and test applications
+	Comes with Spring Boot starters to ensure dependency management and also provides various security metrics
+	Consists of a wide range of APIs for monitoring and managing applications in dev and prod.
+	Integrates with Spring Ecosystem like Spring JDBC, Spring ORM, Spring Data, Spring Security easily by avoiding boilerplate code.
+	
+2. Mention a few features of Spring Boot	
+	Spring CLI – Spring Boot CLI allows you to Groovy for writing Spring boot application and avoids boilerplate code.
+	Starter Dependency – With the help of this feature, Spring Boot aggregates common dependencies together and eventually improves productivity
+	Spring Initializer – This is basically a web application, which can create an internal project structure for you. So, you do not have to manually set up the structure of the project, instead, you can use this feature.
+	Auto-Configuration – The auto-configuration feature of Spring Boot helps in loading the default configurations according to the project you are working on. In this way, you can avoid any unnecessary WAR files.
+	Spring Actuator –  This feature provides help while running Spring Boot applications.
+	Logging and Security – The logging and security feature of Spring Boot, ensures that all the
+
+3. What are the differences between @SpringBootApplication and @EnableAutoConfiguration annotation?
+	--------------------------------------------------------------------------------------------------------------------------------------------------------------
+			@SpringBootApplication																	 | @EnableAutoConfiguration
+	--------------------------------------------------------------------------------------------------------------------------------------------------------------		
+	Used in the main class or bootstrap class	    												 | Used to enable auto-configuration  and component scanning in your project
+	--------------------------------------------------------------------------------------------------------------------------------------------------------------
+	It is a combination of @Configuration, @ComponentScan and @EnableAutoConfiguration annotations.	 | It is a combination of @Configuration and @ComponentScan annotations
+	--------------------------------------------------------------------------------------------------------------------------------------------------------------
+4. How to disable the web server configuration in your Spring Boot application?
+	Spring Boot automatically starts an application in web server mode if it finds the web module in the classpath. To disable the web server configuration, set the webApplicationType to none in the application.properties file.
+	spring.main.web-application-type=none
+5. How to configure and enable SSL for your Spring Boot application?
+	Use the server.ssl.* properties in the application.properties or yml file to configure and enable SSL for your Spring Boot application. Here are typical SSL configurations for your application.
+
+	server.port=8443 //SSL port
+	server.ssl.key-store=classpath:keystore.jks //You can also configure it to external location
+	server.ssl.key-store-password= //password for your key
+	server.ssl.key-password=//key password	
+6. Q37. How the ApplicationContext created by Spring Boot?
+	Spring Boot creates the ApplicationContext once we execute the SpringApplication.run() command.Spring Boot returns the ConfigurableApplicationContext which extends ApplicationContext. This is how Spring Boot creates and return the context.
+
+	public ConfigurableApplicationContext run(String...args) {
+	 //preparation
+	 ConfigurableApplicationContext context = null;
+
+	 //create and return application context
+	 context = createApplicationContext();
+	}
+
+	protected ConfigurableApplicationContext createApplicationContext() {
+	 Class << ? > contextClass = this.applicationContextClass;
+	 if (contextClass == null) {
+	  try {
+	   switch (this.webApplicationType) {
+		case SERVLET:
+		 contextClass = Class.forName(DEFAULT_SERVLET_WEB_CONTEXT_CLASS);
+		 break;
+		case REACTIVE:
+		 contextClass = Class.forName(DEFAULT_REACTIVE_WEB_CONTEXT_CLASS);
+		 break;
+		default:
+		 contextClass = Class.forName(DEFAULT_CONTEXT_CLASS);
+	   }
+	  } catch (ClassNotFoundException ex) {
+	   throw new IllegalStateException(
+		"Unable create a default ApplicationContext, " +
+		"please specify an ApplicationContextClass",
+		ex);
+	  }
+	 }
+	 return (ConfigurableApplicationContext) BeanUtils.instantiateClass(contextClass);
+	}
+
+	For more information, refer to the SpringApplication
+
+ 	
+1. Explain the difference between DI and IOC.
+2. What’s the difference between @Component, @Controller, @Repository & @Service annotations in Spring?
+	@Component: This marks a java class as a bean. It is a generic stereotype for any Spring-managed component. The component-scanning mechanism of spring now can pick it up and pull it into the application context.
+	@Controller: This marks a class as a Spring Web MVC controller. Beans marked with it are automatically imported into the Dependency Injection container.
+	@Service: This annotation is a specialization of the component annotation. It doesn’t provide any additional behavior over the @Component annotation. You can use @Service over @Component in service-layer classes as it specifies intent in a better way.
+	@Repository: This annotation is a specialization of the @Component annotation with similar use and functionality. It provides additional benefits specifically for DAOs. It imports the DAOs into the DI container and makes the unchecked exceptions eligible for translation into Spring DataAccessException.
+3. if there is a singlton bean hodling prototype how will it behave and what will be the approach to fix it.
+		See InjectingPrototypeBeansIntoSingletonInstanceSpring.pdf
+4. What are the different features of Spring Framework?
+	Following are some of the major features of Spring Framework :
+
+	Lightweight: Spring is lightweight when it comes to size and transparency. 
+	Inversion of control (IOC): The objects give their dependencies instead of creating or looking for dependent objects. This is called Inversion Of Control.
+	Aspect oriented Programming (AOP): Aspect oriented programming in Spring supports cohesive development by separating application business logic from system services.
+	Container: Spring Framework creates and manages the life cycle and configuration of the application objects.
+	MVC Framework: Spring Framework’s MVC web application framework is highly configurable. Other frameworks can also be used easily instead of Spring MVC Framework.
+	Transaction Management: Generic abstraction layer for transaction management is provided by the Spring Framework. Spring’s transaction support can be also used in container less environments.
+	JDBC Exception Handling: The JDBC abstraction layer of the Spring offers an exception
+5. Differentiate between BeanFactory and ApplicationContext.
+	--------------------------------------------------------------------------------------------------------------------------------------------------------
+	BeanFactory																	|	ApplicationContext
+	--------------------------------------------------------------------------------------------------------------------------------------------------------
+	It is an interface defined in org.springframework.beans.factory.BeanFactory	| It is an interface defined in org.springframework.context.ApplicationContext
+	--------------------------------------------------------------------------------------------------------------------------------------------------------
+	It uses Lazy initialization													| It uses Eager/ Aggressive initialization
+	--------------------------------------------------------------------------------------------------------------------------------------------------------
+	It explicitly provides a resource object using the syntax					| It creates and manages resource objects on its own
+	--------------------------------------------------------------------------------------------------------------------------------------------------------
+	It doesn’t supports internationalization									| It supports internationalization 
+	--------------------------------------------------------------------------------------------------------------------------------------------------------
+	It doesn’t supports annotation based dependency    							| It supports annotation based dependency  	
+	--------------------------------------------------------------------------------------------------------------------------------------------------------
+	
+6. How many bean scopes are supported by Spring?
+	The Spring Framework supports five scopes. They are:
+
+	1. Singleton: This provides scope for the bean definition to single instance per Spring IoC container.
+	2. Prototype: This provides scope for a single bean definition to have any number of object instances.
+	3. Request: This provides scope for a bean definition to an HTTP-request. 
+	4. Application: A single instance will be created and available during complete lifecycle of ServletContext. Only valid in web-aware Spring ApplicationContext.
+	4. Session: This provides scope for a bean definition to an HTTP-session. 
+	5. Websocket  : A single instance will be created and available during complete lifecycle of WebSocket. Only valid in web-aware Spring ApplicationContext.. 	
+7. What is the Bean life cycle in Spring Bean Factory Container?
+
+	A bean life cycle includes the following steps.
+	1. Within IoC container, a spring bean is created using class constructor.
+	2. Now the dependency injection is performed using setter method.
+	3. Once the dependency injection is completed, BeanNameAware.setBeanName() is called. It sets the name of bean in the bean factory that created this bean.
+	4. Now < code>BeanClassLoaderAware.setBeanClassLoader() is called that supplies the bean class loader to a bean instance.
+	5. Now < code>BeanFactoryAware.setBeanFactory() is called that provides the owning factory to a bean instance.
+	6. Now the IoC container calls BeanPostProcessor.postProcessBeforeInitialization on the bean. Using this method a wrapper can be applied on original bean.
+	7. Now the method annotated with @PostConstruct is called.
+	8. After @PostConstruct, the method InitializingBean.afterPropertiesSet() is called.
+	9. Now the method specified by init-method attribute of bean in XML configuration is called.
+	10. And then BeanPostProcessor.postProcessAfterInitialization() is called. It can also be used to apply wrapper on original bean.
+	11. Now the bean instance is ready to be used. Perform the task using the bean.
+	
+	1. Now when the ApplicationContext shuts down such as by using registerShutdownHook() then the method annotated with @PreDestroy is called.
+	2. After that DisposableBean.destroy() method is called on the bean.
+	3. Now the method specified by destroy-method attribute of bean in XML configuration is called.
+	4. Before garbage collection, finalize() method of Object is called.		
+8. 	Which classes are present in spring JDBC API?
+	Classes present in JDBC API are as follows:
+	JdbcTemplate
+	SimpleJdbcTemplate
+	NamedParameterJdbcTemplate
+	SimpleJdbcInsert
+	SimpleJdbcCall
+9. What are the different types of Advices?
+	Different types of Advices in Spring AOP are:
+
+	Before: These types of advices execute before the joinpoint methods and are configured using @Before annotation mark.
+	After returning: These types of advices execute after the joinpoint methods completes executing normally and are configured using @AfterReturning annotation mark.
+	After throwing:  These types of advices execute only if joinpoint method exits by throwing an exception and are configured using @AfterThrowing annotation mark.
+	After (finally): These types of advices execute after a joinpoint method, regardless of the method’s exit whether normally or exceptional return and are configured using @After annotation mark.
+	Around: These types of advices execute before and after a joinpoint and are configured using @Around annotation mark.	
+10. Exception Handling in Spring Boot
+	Solution 1 – the Controller Level @ExceptionHandler
+	The first solution works at the @Controller level – we will define a method to handle exceptions, and annotate that with @ExceptionHandler:
+
+	public class FooController{
+		 
+		//...
+		@ExceptionHandler({ CustomException1.class, CustomException2.class })
+		public void handleException() {
+			//
+		}
+	}	
+	
+	This approach has a major drawback – the @ExceptionHandler annotated method is only active for that particular Controller, not globally for the entire application. Of course, adding this to every controller makes it not well suited for a general exception handling mechanism.
+	We can work around this limitation by having all Controllers extend a Base Controller class – however, this can be a problem for applications where, for whatever reason, this isn't possible. For example, the Controllers may already extend from another base class which may be in another jar or not directly modifiable, or may themselves not be directly modifiable.
+	Next, we'll look at another way to solve the exception handling problem – one that is global and doesn't include any changes to existing artifacts such as Controllers.
+	Solution 2 – the HandlerExceptionResolver
+	The second solution is to define an HandlerExceptionResolver – this will resolve any exception thrown by the application. It will also allow us to implement a uniform exception handling mechanism in our REST API.
+	Before going for a custom resolver, let's go over the existing implementations.
+	
+11. Name Some of the Design Patterns Used in the Spring Framework?
+	1.Singleton Pattern: Singleton-scoped beans
+	2. Factory Pattern: Bean Factory classes
+	3. Prototype Pattern: Prototype-scoped beans
+	4. Adapter Pattern: Spring Web and Spring MVC
+	5. Proxy Pattern: Spring Aspect Oriented Programming support
+	6. Template Method Pattern: JdbcTemplate, HibernateTemplate, etc.
+	7. Front Controller: Spring MVC DispatcherServlet
+	8. Data Access Object: Spring DAO support
+	9. Model View Controller: Spring MVC
