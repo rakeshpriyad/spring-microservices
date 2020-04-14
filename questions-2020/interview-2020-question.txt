@@ -1,3 +1,4 @@
+Updated DB and algo
 Java8::
 	1. Explain the functional Interface
 	2. Explain the Lambda expression and its usage.
@@ -33,10 +34,23 @@ Algo:
 	1. What is the time complexity of Binary Search and explain how.
 	2. What will be time complexity of TreeMap when contains key method is used. and explain how.
 	3. Write a program to detect loop in linked list.
-	4. Write a program to rotate the array.
-	5. How to find the height of tree in non-recursive manner.
+	4. Write a program to detect loop and break the loop
+	5. Write a program to rotate the array.
+	6. How to find the height of tree in non-recursive manner.
+
 DB:
-	1. What is the difference betbeen truncate and delete.
+	1. What is ACID property in a database?
+	2. What is the difference betbeen truncate and delete.
+	3. How to remove duplicate rows from the table?
+	4.	How to find count of duplicate rows? (95% asked in SQL queries for Interviews )
+	5. Write an SQL Query to find maximum salary in each department of an organisation.
+	6. How to display 1 to 100 Numbers with query?
+	7. How to find Second highest salary in Employee table using self-join?
+	8.How to Show the Max marks and min marks together from student table?
+	9. How to calculate number of rows in table without using count function?
+	10. How to fetch common records from two different tables which has not any joining condition.
+	11. Display 4 to 7 records from Employee table.
+
 TransactionManagement::
 	1. How to handle transaction between multiple microservices
 	2. What is the difference between Hibernate Transaction and Spring Transaction
