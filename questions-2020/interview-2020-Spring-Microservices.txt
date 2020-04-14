@@ -10,12 +10,16 @@ Spring and MicroServices:
 3. Explain the Microservice Architecture
 4. How do you handle Distributed logging.
 5. How to convert Scheduler based monolithic application to microservice.
+	See: MicroservicesScheduler.pdf
 6. if there is a singlton bean hodling prototype how will it behave and what will be the approach to fix it.
+	See InjectingPrototypeBeansIntoSingletonInstanceSpring.pdf
 7. if we have monolithic application how to convert it to microservice, key things to take care while converting it to microservice
+	12-FactorAppMicroservices.pdf
 8. Explain the distributed logging management.
 9. Explain ELK (Elastic search, Logstash and Kibana)
 10. How do you deploy microservice in Kubernetes
- 
+ See how-to-deploy-SpringBootGKE.pdf
+ interview-GCP.txt
 11. Explain Blue-Green Deployment Technique
 		Answer:
 		Blue-green deployment is a technique that reduces downtime and risk by running two identical production environments called Blue and Green. At any time, only one of the environments is live, with the live environment serving all production traffic. For this example, Blue is currently live and Green is idle.
@@ -49,6 +53,28 @@ Answer:
 		Decentralized Governance – The focus is on using the right tool for the right job. That means there is no standardized pattern or any technology pattern. Developers have the freedom to choose the best useful tools to solve their problems
 		Responsibility – Microservices do not focus on applications as projects. Instead, they treat applications as products for which they are responsible
 16. What is the difference between Monolithic, SOA and Microservices Architecture?
+ 	Microservices	SOA
+		----------------------------------------------------------------------------------------------------------------------------
+		Architecture		 |	Designed to host services which can function independently	|	Designed to share resources across services
+		----------------------------------------------------------------------------------------------------------------------------
+		Component sharing	 |	Typically does not involve component sharing 				|	Frequently involves component sharing
+		----------------------------------------------------------------------------------------------------------------------------
+		Granularity			 |	Fine-grained services										|	Larger, more modular services
+		----------------------------------------------------------------------------------------------------------------------------
+		Data storage		 |	Each service can have an independent data storage			|	Involves sharing data storage between services
+		----------------------------------------------------------------------------------------------------------------------------
+		Governance			 |	Requires collaboration between teams						|	Common governance protocols across teams 
+		----------------------------------------------------------------------------------------------------------------------------
+		Size and scope		 |	Better for smaller and web-based applications				|	Better for large scale integrations
+		----------------------------------------------------------------------------------------------------------------------------
+		Communication		 |	Communicates through an API layer							|	Communicates through an ESB
+		----------------------------------------------------------------------------------------------------------------------------
+		Coupling and cohesion|	Relies on bounded context for coupling						|	Relies on sharing resources
+		----------------------------------------------------------------------------------------------------------------------------
+		Remote services		 |	Uses REST and JMS											|	Uses protocols like SOAP and AMQP
+		----------------------------------------------------------------------------------------------------------------------------
+		Deployment			 |	Quick and easy deployment									|	Less flexibility in deployment
+		----------------------------------------------------------------------------------------------------------------------------
 
 17. What are main differences between Microservices and Monolithic Architecture?
 Answer:
