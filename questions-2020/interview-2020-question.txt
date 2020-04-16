@@ -1,3 +1,17 @@
+Java:
+Threadpool vs Thread
+Advantages of executor framework.
+How to configure a job in CI CD/Jenkins
+What are the content of Docker file
+How to sort the file of 20 GB in 500MB ram?
+
+
+How to do impact analysis, if field creditcard no will need to increase from 10 to 12 digits
+Design an application of Credit Card, with asyncronous feature(Kafka)
+How request is send to microservice from UI through Api gateway, explain the flow.
+How do you handle risk ?
+
+
 Updated DB and algo, Sys Design
 Java8::
 	1. Explain the functional Interface
@@ -25,7 +39,10 @@ Java8::
 	11. Explain Stamped lock
 	12. Write a program in java8 for fibonecii series.
 	13. Explain MetaSpace in java8
-	
+	14. How Datetime api is different from old date time api, how calendar api is heavy weight?
+	15. Will lambda expression not create duplicate code problem
+	16. What is the advantages of Lambda, is any performance improvement due to Lambda
+	17. 
 Design:
 	1. Design Lift Maintenance system (Elevator management).
 	2. Design Resource bunder to read properties from properties file, yaml, and DB.
