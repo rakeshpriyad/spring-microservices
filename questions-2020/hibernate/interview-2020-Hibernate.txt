@@ -3,7 +3,6 @@ Hibernate:
 
 Q1. What is Hibernate?
 
-Hibernate - Hibernate Interview Questions- EdurekaHibernate is one of the most popular Java frameworks that simplify the development of Java application to interact with the database. It is an Object-relational mapping (ORM) tool. Hibernate also provides a reference implementation of Java API.
 
 It is referred as a framework which comes with an abstraction layer and also handles the implementations internally. The implementations include tasks like writing a query for CRUD operations or establishing a connection with the databases, etc.
 
@@ -29,7 +28,6 @@ Q4. What is an ORM tool?
 
 It is basically a technique that maps the object that is stored in the database. An ORM tool helps in simplifying data creation, manipulation, and access. It internally uses the Java API to interact with the databases.
 
-ORM tool- Hibernate Interview Questions- Edureka
 
 Q5. Why use Hibernate Framework?
 
@@ -78,15 +76,11 @@ SessionFactory (org.hibernate.SessionFactory)
 Session (org.hibernate.Session)
 Transaction (org.hibernate.Transaction)
 Q11. What is One-to-One association in Hibernate?
-
 In this type of mapping,  you only need to model the system for the entity for which you want to navigate the relationship in your query or domain model. You need an entity attribute that represents the association, so annotate it with an @OneToOne annotation.
-
 Q12. What is One-to-Many association in Hibernate?
-
 In this type of association, one object can be associated with multiple/different objects. Talking about the mapping, the One-to-Many mapping is implemented using a Set Java collection that does not have any redundant element. This One-to-Many element of the set indicates the relation of one object to multiple objects.
 
 Q13. What is Many-to-Many association in Hibernate?
-
 Many-to-Many mapping requires an entity attribute and a @ManyToMany annotation. It can either be unidirectional and bidirectional. In Unidirectional, the attributes model the association and you can use it to navigate it in your domain model or JPQL queries. The annotation tells Hibernate to map a Many-to-Many association. The bidirectional relationship, mapping allows you to navigate the association in both directions. 
 
 Q14. How to integrate Hibernate and Spring?
