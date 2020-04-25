@@ -11,6 +11,21 @@ Design an application of Credit Card, with asyncronous feature(Kafka)
 How request is send to microservice from UI through Api gateway, explain the flow.
 How do you handle risk ?
 
+DBS:
+1. How you deal with Performance tuning.
+2. if you see, if any query is taking time, how you optimize it
+3. How microservices communicate with each other.
+4. Ho you handle security in microservices.
+5. How change request works?
+6. How the CI/CD works?
+7. how you configure CI/CD in jenkins
+8. How agile works?
+9. How do you ensure your dev is done and it should be assign to QA?
+10. Which Performance testing tool you are using.
+11. Why did you decided to use Spring Boot.
+12. How deployement happens in GKE
+
+
 
 Updated DB and algo, Sys Design
 Java8::
