@@ -1,0 +1,35 @@
+1. Start the minikube
+$ minikube start
+2. After that, we can verify that kubectl communicates correctly with our cluster run the command:
+$ kubectl cluster-info
+
+Kubernetes master is running at https://192.168.99.100:8443
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+At this stage, we'll keep the IP in the response close (192.168.99.100 in our case). We'll late
+3. We can see the dashboard using following command
+ $ minikube dashboard
+4.We have to make sure here that we trigger the build process on the Docker host of the Minikube cluster, otherwise, Minikube won't find the images later during deployment. Furthermore, the workspace on our host must be mounted into the Minikube VM: 
+Step to deploy on minikube
+5. create folder C:\Users\aayushraj\kubernetes-ws
+6. copy the spring-boot-only-mini-kube from G:\JAVA\microservices\spring-microservices\spring-boot-only-mini-kube
+7. Open Powershell run below command
+$ minikube ssh
+8. Go to /c/Users/aayushraj/kubernetes-ws/spring-boot-only-mini-kube/spring-bank-branch-service-kubernetes
+cd /c/Users/aayushraj/kubernetes-ws/spring-boot-only-mini-kube/spring-bank-branch-service-kubernetes
+9. Run docker build like below f
+docker build -t rakeshpriyad/spring-bank-branch-service-kubernetes .
+
+kubectl run kube-demo1 --image=rakeshpriyad/spring-bank-branch-service-kubernetes --port=8080 --image-pull-policy Never
+
+
+10. Verify deployments
+
+$ kubectl get deployments
+
+11. Check in minikube dash board
+
+http://127.0.0.1:57144/api/v1/namespaces/kubernetes-dashboard/services/http:kubernetes-dashboard:/proxy/#/overview?namespace=default
+12. if you want to have a look at the application logs, we need the Pod ID first:
+
+$ kubectl get pods
+$ kubectl logs <pod id>
