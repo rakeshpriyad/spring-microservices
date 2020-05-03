@@ -1,0 +1,65 @@
+https://medium.com/@codingfreak
+https://medium.com/@codingfreak/huge-collection-of-array-interview-questions-e87ac7c34e62
+
+Find pair with given sum in an array: 
+https://www.techiedelight.com/find-pair-with-given-sum-array/
+a. O(nlogn) solution:
+The idea is to sort the given array in ascending order and maintain search space by maintaining two indices (low and high) that initially points to two end-points of the array. Then we loop till low is less than high index and reduce search space 
+
+		// sort the array in ascending order
+		Arrays.sort(A);
+		// maintain two indices pointing to end-points of the array
+		int low = 0;
+		int high = A.length - 1;
+		// reduce search space arr[low..high] at each iteration of the loop loop till low is less than high
+		while (low < high) 	{
+			// sum found
+			if (A[low] + A[high] == sum)	{
+				System.out.println("Pair found");
+				return;
+			}
+
+			// increment low index if total is less than the desired sum
+			// decrement high index is total is more than the sum
+			if (A[low] + A[high] < sum) {
+				low++;
+			} else{
+				high--;
+			}
+		}
+
+		// No pair with given sum exists in the array
+		System.out.println("Pair not found");
+	}
+b. O(n) solution using Hashing
+
+if(map.containsKey(sum-A[i]){
+System.out.println("pair found at index :"+ map.get(sum-A[i]) + "and "+ i);
+return 
+}
+map.put(A[i], i);
+
+
+2. Sort binary array in linear time
+https://www.techiedelight.com/sort-binary-array-linear-time/
+a. Ans: using count of zero, replace array with zero the rest with one
+b. Partitioning logic of quick sorta.
+	public static void sort(int[] A) {
+		int pivot = 1;
+		int j = 0;
+		// each time we encounter a 0, j is incremented and  0 is placed before the pivot
+		for (int i = 0; i < A.length; i++)	{
+			if (A[i] < pivot) {
+				swap(A, i, j);
+				j++;
+			}
+		}
+	}
+
+3. Find a duplicate element in a limited range array
+https://www.techiedelight.com/find-duplicate-element-limited-range-array/
+a> maintain another arrat of visited, if it is not visited, if found again, then duplicate
+b.) mark the array values negative  if the val-1 is positive othersie return value as it is duplicate 
+c) xor of array elements and xor of all value in range, return xor
+d) sum formula = n*(n-1)/2- array sum
+

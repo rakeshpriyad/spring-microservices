@@ -1,3 +1,60 @@
+Wells Fargo:
+Round 1 : Suresh
+
+1. What is Generic?
+2. What is Type inference
+3. What is type errazor
+4. Autoboxing
+5. Delete vs Truncate (delete uses another table space, and once commit is done only delete is performed)
+6. Microservice communication
+7. Spring Boot advantages
+8. How to handler if a spring boot has to be deployed on prod in tomcat, and local in embeded.
+9. Maven Scope
+10. What is ref cursor
+https://www.oracletutorial.com/plsql-tutorial/plsql-cursor-variables/
+11. Exception Handling
+12. Exception propogation
+13. constructor chaining incase of Super classa and sub class
+14. if we provide simple constructor, what compiler does add
+super
+15. When static block is called
+16. How many time a class is loaded
+
+
+Round 2: KK
+1. How to achieve security like hdfc bank/ any other bank
+2. Where encryption happens in browser?
+3. inter communication between microservices?
+5. 12 factor app
+6. explaion the desing of microservice if we have to display Account Summary by just logging in
+Account Service
+Account Summary Service
+User Service
+Inter communication using apigateway, etc
+7. why did you choose technology as Spring boot/Microservice
+8. How to preprocess 20 GB file before putting into db
+Spark
+9. Why Spark, why not Flink 
+Spark prior knowledge
+10. Any idea about NoSQL
+11. JMS/Kafka
+12. What is the disadvantages if we have 10 Producer sending to same queuea and have only one consumer
+if you have been given a chance, how would you re-design in JMS only
+13. What are the 
+
+Round 3:
+1) How to find max if statement is not available in java
+2) Microservices
+3) Advantages of Lambda
+4) Any day you feel bad while returning from office
+5) Why filter/map is faster of java8
+6) Agile VS waterfall, which one you prefer and why?
+7) inter communication between microservices?
+
+
+
+
+
 Java:
 Threadpool vs Thread
 Advantages of executor framework.

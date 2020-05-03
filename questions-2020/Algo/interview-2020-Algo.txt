@@ -1,3 +1,5 @@
+Array Interview question: https://medium.com/@codingfreak/huge-collection-of-array-interview-questions-e87ac7c34e62
+
 Algo:
 	1. What is the time complexity of Binary Search and explain how.
 	
