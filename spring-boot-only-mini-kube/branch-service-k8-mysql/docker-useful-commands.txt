@@ -1,0 +1,101 @@
+docker-machine regenerate-certs default
+docker-machine restart default
+eval $(docker-machine env default)
+docker-machine ls
+docker-machine stop default
+docker-machine rm default
+docker-machine create --driver virtualbox default
+eval $(docker-machine env default)
+
+
+	
+docker system prune
+docker system prune -a
+docker images
+docker build -t branch-service-k8-mysql:1.0 .
+docker run -d -p 8070:8080 -t branch-service-k8-mysql:1.0
+o docker run -d -p 80:8080 -t branch-service-k8-mysql:1.0
+$ sudo docker run -d -p 443:8443 -t branch-service-k8-mysql:1.0
+$ sudo docker run -d -p 80:8080 -p 443:8443 -t branch-service-k8-mysql:1.0
+
+docker container ls -a
+docker container stop 9d4ba2abc7ee
+docker container stop $(docker container ls -aq)
+docker container rm 9d4ba2abc7ee 20a94c0d0ce8
+
+rkp/branch-service-k8-mysql
+docker build -t branch-service-k8-mysql:1.0 .
+docker image tag branch-service-k8-mysql:1.0 rkp/branch-service-k8-mysql
+
+http://localhost:8080
+
+
+
+#Kubernetes
+
+PS C:\Users\aayushraj> minikube docker-env
+#$Env:DOCKER_TLS_VERIFY = "1"
+#$Env:DOCKER_HOST = "tcp://192.168.99.102:2376"
+#$Env:DOCKER_CERT_PATH = "C:\Users\aayushraj\.minikube\certs"
+#$Env:MINIKUBE_ACTIVE_DOCKERD = "minikube"
+# To point your shell to minikube's docker-daemon, run:
+
+minikube -p minikube docker-env | Invoke-Expression
+
+
+#To generate the credential for secrets
+1. start minikube
+minikube start
+2. open new command prompt and run command like
+#generate username for non root
+echo -n test| base64
+dGVzdA==
+
+#generate password for non root
+echo -n test123| base64
+dGVzdDEyMw==
+
+3. Put these user/credentials details in mysqldb-credentials.yml
+4. Create connfig map using 
+kubectl apply -f mysql-configmap.yml
+
+kubectl get configmap
+5. Create credentials
+kubectl apply -f mysqldb-credentials.yml
+kubectl get secrets
+
+kubectl apply -f mysqldb-root-credentials.yml
+kubectl get secrets
+
+
+
+6. deploy mysql
+kubectl apply -f mysql-deployment.yml
+kubectl get deployments
+
+7. create container from images using docker command
+
+rkp/branch-service-k8-mysql
+docker build -t branch-service-k8-mysql:1.0 .
+docker image tag branch-service-k8-mysql:1.0 rkp/branch-service-k8-mysql
+
+
+8. Deploy spring boot application 
+kubectl apply -f deployment.yml
+kubectl get deployments
+kubectl get pods
+kubectl logs  <pod id>
+kubectl logs branch-service-k8-mysql-6bbfd946c9-jjmzm
+9. Get deployment descrition:
+kubectl describe services/branch-service-k8-mysql
+10. get ip of minikube
+minikube ip
+192.168.99.102
+11. Access
+http://192.168.99.102:30163/branch
+
+12. 
+kubectl get services   #List all services in the namespace
+13. delete deployment
+kubectl delete -n default deployment branch-service-k8-mysql
+14. kubectl delete -n default deployment mysql

@@ -1,0 +1,58 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: branch-service-k8-mysql
+  labels:
+    name: branch-service-k8-mysql
+spec:
+  ports:
+    - nodePort: 30163 
+      port: 8080      
+      targetPort: 8080  
+      protocol: TCP
+  selector:           
+    app: branch-service-k8-mysql
+  type: NodePort       
+
+---
+apiVersion: apps/v1 
+kind: Deployment    
+metadata:              
+  name: branch-service-k8-mysql
+spec:                
+  selector:         
+    matchLabels:
+      app: branch-service-k8-mysql
+  replicas: 3        
+  template:
+    metadata:
+      labels:        
+        app: branch-service-k8-mysql
+    spec:
+      containers:
+        - name: branch-service-k8-mysql
+          image: branch-service-k8-mysql:1.0
+          ports:
+            - containerPort: 8080                
+          env:   # Setting Enviornmental Variables
+          - name: DB_HOST   # Setting Database host address from configMap
+            valueFrom: 
+              configMapKeyRef:
+                name: db-conf  # name of configMap
+                key: host
+          - name: DB_NAME  # Setting Database name from configMap
+            valueFrom:
+              configMapKeyRef:
+                name: db-conf 
+                key: name
+          - name: DB_USERNAME  # Setting Database username from Secret
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials # Secret Name
+                key: username
+          - name: DB_PASSWORD # Setting Database password from Secret
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: password     
+        
