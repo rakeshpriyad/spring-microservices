@@ -18,15 +18,15 @@ https://www.oracletutorial.com/plsql-tutorial/plsql-cursor-variables/
 14. if we provide simple constructor, what compiler does add
 super
 15. When static block is called
-16. How many time a class is loaded
+16. How many time a class is loaded?
 
 
 Round 2: KK
 1. How to achieve security like hdfc bank/ any other bank
 2. Where encryption happens in browser?
 3. inter communication between microservices?
-5. 12 factor app
-6. explaion the desing of microservice if we have to display Account Summary by just logging in
+5. What is 12 factor app?
+6. Explaion the desing of microservice if we have to display Account Summary by just logging in
 Account Service
 Account Summary Service
 User Service
@@ -44,12 +44,12 @@ if you have been given a chance, how would you re-design in JMS only
 
 Round 3:
 1) How to find max if statement is not available in java
-2) Microservices
+2) Explain Microservices architecture 
 3) Advantages of Lambda
 4) Any day you feel bad while returning from office
 5) Why filter/map is faster of java8
 6) Agile VS waterfall, which one you prefer and why?
-7) inter communication between microservices?
+7) Inter communication between microservices?
 
 
 

@@ -1,3 +1,25 @@
+1. Reverse an array without affecting special characters
+public static void reverse(char str[]) {
+        // Initialize left and right pointers
+        int r = str.length - 1, l = 0;
+        // Traverse string from both ends until  'l' and 'r'
+        while (l < r) {
+            // Ignore special characters
+            if (!Character.isAlphabetic(str[l]))
+                l++;
+            else if (!Character.isAlphabetic(str[r]))
+                r--;            // Both str[l] and str[r] are not spacial
+            else {
+                char tmp = str[l];
+                str[l] = str[r];
+                str[r] = tmp;
+                l++;
+                r--;
+            }
+        }
+    }
+2. Length of the largest subarray with contiguous elements | Set 1
+	
 https://medium.com/@codingfreak
 https://medium.com/@codingfreak/huge-collection-of-array-interview-questions-e87ac7c34e62
 

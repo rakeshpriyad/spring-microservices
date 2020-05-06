@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: organization
+  labels:
+    app: organization
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: organization
+  template:
+    metadata:
+      labels:
+        app: organization
+    spec:
+      containers:
+      - name: organization
+        image: piomin/organization:1.1
+        ports:
+        - containerPort: 8080
+        env:   # Setting Enviornmental Variables
+          - name: MONGO_DATABASE  # Setting Database name from configMap
+            valueFrom:
+              configMapKeyRef:
+                name: organization 
+                key: database
+          - name: MONGO_USERNAME  # Setting Database username from Secret
+            valueFrom:
+              secretKeyRef:
+                name: organization # Secret Name
+                key: username
+          - name: MONGO_PASSWORD # Setting Database password from Secret
+            valueFrom:
+              secretKeyRef:
+                name: organization
+                key: password     
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: organization
+  labels:
+    app: organization
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+  selector:
+    app: organization
+  type: NodePort

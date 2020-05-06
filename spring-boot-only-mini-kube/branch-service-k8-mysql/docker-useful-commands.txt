@@ -46,6 +46,7 @@ minikube -p minikube docker-env | Invoke-Expression
 #To generate the credential for secrets
 1. start minikube
 minikube start
+minikube sssh
 2. open new command prompt and run command like
 #generate username for non root
 echo -n test| base64
