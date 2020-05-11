@@ -1,7 +1,166 @@
+1. What is Generic?
+2. What is type erasure
+3. What is Type inference
+4. How Enum internally works?
+5. What is Autoboxing/Unboxing?
+6. How to find max if statement is not available in java
+7. How HashMap works internally?
+8. Difference between interface and Abastract class, with real life usage
+9. Write a program to sort the hashmap based on value:
+10. Difference between Countdownlatch and Cyclic Barrier:
+Type of ThreadPool in java, Difference between thread pool and normal thread in java
+11. Custom Thread pool in java
+12. What is the serialization, have yo used in your project and why?
+How to handle OOM? Explain your approach.
+
+
+1. What is Generic?
+The Java Generics programming is introduced in J2SE 5 to deal with type-safe objects. It makes the code stable by detecting the bugs at compile time.
+Before generics, we can store any type of objects in the collection, i.e., non-generic. Now generics force the java programmer to store a specific type of objects.
+
+Advantage of Java Generics
+i) Type-safety: We can hold only a single type of objects in generics. It doesn?t allow to store other objects.
+ii) Type casting is not required: There is no need to typecast the object.
+iii) Compile-Time Checking: It is checked at compile time so problem will not occur at runtime. The good programming strategy says it is far better to handle the problem at compile time than runtime.
+
+2. What is type erasure:
+Type erasure can be explained as the process of enforcing type constraints only at compile time and discarding the element type information at runtime.
+For example:
+public static  <E> boolean containsElement(E [] elements, E element){
+    for (E e : elements){
+        if(e.equals(element)){
+            return true;
+        }
+    }
+    return false;
+}
+
+The compiler replaces the unbound type E with an actual type of Object:
+
+public static  boolean containsElement(Object [] elements, Object element){
+    for (Object e : elements){
+        if(e.equals(element)){
+            return true;
+        }
+    }
+    return false;
+}
+Types of Type Erasure
+Type erasure can occur at class (or variable) and method levels.
+
+a) Class Type Erasure
+At the class level, the compiler discards the type parameters on the class and replaces them with its first bound, or Object if the type parameter is unbound.
+Let's implement a Stack using an array:
+public class Stack<E> {
+    private E[] stackContent;
+ 
+    public Stack(int capacity) {
+        this.stackContent = (E[]) new Object[capacity];
+    }
+ 
+    public void push(E data) {
+        // ..
+    }
+ 
+    public E pop() {
+        // ..
+    }
+}
+
+Upon compilation, the compiler replaces the unbound type parameter E with Object:
+public class Stack {
+    private Object[] stackContent;
+ 
+    public Stack(int capacity) {
+        this.stackContent = (Object[]) new Object[capacity];
+    }
+ 
+    public void push(Object data) {
+        // ..
+    }
+ 
+    public Object pop() {
+        // ..
+    }
+}
+
+ii) Method Type Erasure
+Let's consider a method to display the contents of any given array:
+
+public static <E> void printArray(E[] array) {
+    for (E element : array) {
+        System.out.printf("%s ", element);
+    }
+}
+Upon compilation, the compiler replaces the type parameter E with Object:
+public static void printArray(Object[] array) {
+    for (Object element : array) {
+        System.out.printf("%s ", element);
+    }
+}
+
+1. How to find min/max withot if statement in java
+Solution:
+Minimum of two numbers can be found from the following:
+
+Min(x,y) = y ^ ((x ^ y) & -(x < y))
+
+It works because if x < y, then -(x < y) will be all ones, so r = y ^ (x ^ y) & ~0 = y ^ x ^ y = x. Otherwise, if x >= y, then -(x < y) will be all zeros, so r = y ^ ((x ^ y) & 0) = y. On some machines, evaluating (x < y) as 0 or 1 requires a branch instruction, so there may be no advantage.
+
+Similarly the maximum of two integers can be found from the following:
+
+Max(x,y) = x ^ ((x ^ y) & -(x < y))
+
+3. What is Type inference in java?
+Type inference is a feature of Java which provides ability to compiler to look at each method invocation and corresponding declaration to determine the type of arguments.
+Java provides improved version of type inference in Java 8. the following example explains, how we can use type inference in our code:
+Here, we are creating arraylist by mentioning integer type explicitly at both side. The following approach is used earlier versions of Java.
+
+List<Integer> list = new ArrayList<Integer>();  
+In the following declaration, we are mentioning type of arraylist at one side. This approach was introduce in Java 7. Here, you can left second side as blank diamond and compiler will infer type of it by type of reference variable.
+
+List<Integer> list2 = new ArrayList<>();   
+
+Improved Type Inference
+In Java 8, you can call specialized method without explicitly mentioning of type of arguments.
+
+showList(new ArrayList<>());  
+Java Type Inference Example
+You can use type inference with generic classes and methods.
+
+import java.util.ArrayList;  
+import java.util.List;  
+public class TypeInferenceExample {  
+    public static void showList(List<Integer>list){  
+        if(!list.isEmpty()){  
+            list.forEach(System.out::println);  
+        }else System.out.println("list is empty");  
+    }  
+    public static void main(String[] args) {  
+        // An old approach(prior to Java 7) to create a list  
+        List<Integer> list1 = new ArrayList<Integer>();  
+        list1.add(11);  
+        showList(list1);  
+        // Java 7    
+        List<Integer> list2 = new ArrayList<>(); // You can left it blank, compiler can infer type  
+        list2.add(12);  
+        showList(list2);  
+        // Compiler infers type of ArrayList, in Java 8  
+        showList(new ArrayList<>());  
+    }  
+}  
+Output:
+
+11
+12
+list is empty
+
+
+
 Java:
-1. How HashMap works internally?
-2. Difference between interface and Abastract class, with real life usage
-3. Write a program to sort the hashmap based on value:
+2. How HashMap works internally?
+3. Difference between interface and Abastract class, with real life usage
+4. Write a program to sort the hashmap based on value:
 List<Map.Entry<String, Integer>> list = new ArrayList<>(hm.entrySet());
 Colletion.sort(list, new Comparator<Map.Entry<String,Integer>>(){
 	public int compare(Map.Entry<String,Integer> obj1, Map.Entry<String,Integer> obj2){

@@ -47,4 +47,9 @@ $ kubectl apply -f kubernetes\ingress.yaml
 kubectl describe ing gateway-ingress
 kubectl get svc
 
+
+ipconfig /flushdns
+
+ http://192.168.99.102:31237/swagger-ui.html.
+ 
 https://piotrminkowski.com/2018/08/02/quick-guide-to-microservices-with-kubernetes-spring-boot-2-0-and-docker/
