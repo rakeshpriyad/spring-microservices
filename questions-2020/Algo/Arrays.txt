@@ -1,3 +1,26 @@
+https://www.geeksforgeeks.org/number-subarrays-product-less-k/
+https://www.geeksforgeeks.org/find-the-element-before-which-all-the-elements-are-smaller-than-it-and-after-which-all-are-greater-than-it/
+https://www.geeksforgeeks.org/equilibrium-index-of-an-array/
+https://www.geeksforgeeks.org/find-a-repeating-and-a-missing-number/
+https://www.geeksforgeeks.org/largest-sum-contiguous-subarray/
+https://www.geeksforgeeks.org/maximum-subarray-sum-using-divide-and-conquer-algorithm/
+https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array/
+https://www.geeksforgeeks.org/k-largestor-smallest-elements-in-an-array/
+https://www.geeksforgeeks.org/largest-sum-subarray-least-k-numbers/
+https://www.geeksforgeeks.org/leaders-in-an-array/
+
+
+
+
+
+
+
+
+
+
+
+
+
 1. Reverse an array without affecting special characters
 public static void reverse(char str[]) {
         // Initialize left and right pointers
