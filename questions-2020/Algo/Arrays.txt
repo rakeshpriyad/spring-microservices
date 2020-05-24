@@ -8,6 +8,13 @@ https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array/
 https://www.geeksforgeeks.org/k-largestor-smallest-elements-in-an-array/
 https://www.geeksforgeeks.org/largest-sum-subarray-least-k-numbers/
 https://www.geeksforgeeks.org/leaders-in-an-array/
+https://www.geeksforgeeks.org/trapping-rain-water/
+https://www.geeksforgeeks.org/find-subarray-with-given-sum-in-array-of-integers/?ref=rp
+https://www.geeksforgeeks.org/rearrange-given-array-place/
+https://www.geeksforgeeks.org/find-the-missing-number/
+https://www.geeksforgeeks.org/chocolate-distribution-problem/
+https://www.geeksforgeeks.org/number-subarrays-product-less-k/
+https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array/
 
 
 
