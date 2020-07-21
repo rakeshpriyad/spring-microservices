@@ -1,5 +1,6 @@
 package com.test.sec.oauth.jwt.config.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,6 +18,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final DataSource dataSource;
 
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
     private UserDetailsService userDetailsService;
 
     public WebSecurityConfiguration(final DataSource dataSource) {
@@ -25,7 +28,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService())
+        auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 
@@ -43,7 +46,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return passwordEncoder;
     }
 
-    @Bean
+    /*@Bean
     @Override
     public UserDetailsService userDetailsService() {
         if (userDetailsService == null) {
@@ -51,6 +54,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             ((JdbcDaoImpl) userDetailsService).setDataSource(dataSource);
         }
         return userDetailsService;
-    }
+    }*/
 
 }

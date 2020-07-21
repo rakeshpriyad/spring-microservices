@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.test.bank.branch.model;
+package com.test.bank.branch.repository;
 
+import com.test.bank.branch.model.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -27,4 +28,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Michael Isvy
  * @author Maciej Szarlinski
  */
-public interface CustomerRepository extends JpaRepository<Customer, Integer> { }
+public interface CustomerRepository extends JpaRepository<Customer, Integer> {
+
+
+}

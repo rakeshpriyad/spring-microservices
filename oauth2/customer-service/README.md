@@ -46,9 +46,12 @@ To test all together we need to spin up the Authorization Server and the Resourc
 Generating the token
 $ curl -u clientId:secret -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=password&username=user&password=pass" localhost:9000/oauth/token
 
+#curl -X POST http://localhost:9000/oauth/token  -F grant_type=password -F username=admin -F password=admin1234 -F client_id=spring-security-oauth2-read-write-client
+
+$ curl -u clientId:secret -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=password&username=admin&password=admin1234" localhost:9000/oauth/token
 
 {
-  "access_token" : "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDgxODk0NDUsInVzZXJfbmFtZSI6InVzZXIiLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwianRpIjoiYjFjYWQ3MTktZTkwMS00Njk5LTlhOWEtYTIwYzk2NDM5NjAzIiwiY2xpZW50X2lkIjoiY2xpZW50SWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXX0.LkQ3KAj2kPY7yKmwXlhIFaHtt-31mJGWPb-_VpC8PWo9IBUpZQxg76WpahBJjet6O1ICx8b5Ab2CxH7ErTl0tL1jk5VZ_kp66E9E7bUQn-C09CY0fqxAan3pzpGrJsUvcR4pzyzLoRCuAqVRF5K2mdDQUZ8NaP0oXeVRuxyRdgjwMAkQGHpFC_Fk-7Hbsq2Y0GikD0UdkaH2Ey_vVyKy5aj3NrAZs62KFvQfSbifxd4uBHzUJSkiFE2Cx3u1xKs3W2q8MladwMwlQmWJROH6lDjQiybUZOEhJaktxQYGAinScnm11-9WOdaqohcr65PAQt48__rMRi0TUgvsxpz6ow",
+  "access_token" : "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTUzMjUwMDksInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiQ1VTVE9NRVJfREVMRVRFIiwiQUNDT1VOVF9VUERBVEUiLCJDVVNUT01FUl9DUkVBVEUiLCJBQ0NPVU5UX1JFQUQiLCJBQ0NPVU5UX0RFTEVURSIsIkFDQ09VTlRfQ1JFQVRFIiwiQ1VTVE9NRVJfUkVBRCIsIkNVU1RPTUVSX1VQREFURSJdLCJqdGkiOiJZL01TcUdERlVWaXBpcVh3a1hqd1owdFMrblE9IiwiY2xpZW50X2lkIjoiY2xpZW50SWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXX0.d0DU1SApuBLTk-_1-7T01sYvDn2l2MyY4jyDSGnboEuRWzWr3GK8yxfU6NyS3GOdV3z-300qwuEP8aDIXmAOQ_-bFShpFbnDqRR0OlNFXs5RLj6VydA4Cg-acQ7qS22deauR4V_-pU7nI2avWSr0z2SvUDbr5hG2aNV0WrViydPIEld2-AYreqjRMgdlhQIyKRbUMNwZFIF0RzMiuOIbwoWYGTt8juPXXhXV9msqz6u1XQPBUERUvIF29SMIcwmyUbDiRufcTZR1V6vkmQReb5ECYYTb3OhZNL0Gn11ODmk_Y76IQfSzHXmw2fheqQEJ0yEeidjEoYx0bm4fMMs3_g",
   "token_type" : "bearer",
   "refresh_token" : "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiJ1c2VyIiwic2NvcGUiOlsicmVhZCIsIndyaXRlIl0sImF0aSI6ImIxY2FkNzE5LWU5MDEtNDY5OS05YTlhLWEyMGM5NjQzOTYwMyIsImV4cCI6MTU1MDc4MTE0NSwiYXV0aG9yaXRpZXMiOlsiUk9MRV9VU0VSIl0sImp0aSI6Ijg2OWFjZjM2LTJiODAtNGY5Ni04MzUwLTA5NTgyMzE3NTAzMCIsImNsaWVudF9pZCI6ImNsaWVudElkIn0.TDQwUNb627-f0-Cjn1vWZXFpzZSGpeKZq85ivA9zY_atOXM2WfjOxTLE6phnNLevjLSNAGrx1skm_sx6leQlrrmDi36nwiR7lvhv8xMbn1DkF5KaoWPhldW7GHsSIiauMu_cJ5Kmq89ZOEOlxYoXlLwfWYo75ISkKNYqko98yDogGrRAJxtc1aKIBLypLchhoCf8w43efd11itwvBdaLIb5ACfN30kztUqQtbeL8voQP6tOsRZbCgbOOKMTulOCRyBvaora4GJDV2qdvXdCUT-kORKDj9liqt2ae7OJzb2FuuXCGqBUrxYYK-H-wdwh7XFkXVe74Lev9YDUbyEmDHg",
   "expires_in" : 299,
@@ -59,48 +62,7 @@ Accessing the resource
 
 Now that you have generated the token copy the access_token and add it to the request on the Authorization HTTP Header, e.g:
 
-curl localhost:9100/me -H "Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDgxODk0NDUsInVzZXJfbmFtZSI6InVzZXIiLCJhdXRob3JpdGllcyI6WyJST0xFX1VTRVIiXSwianRpIjoiYjFjYWQ3MTktZTkwMS00Njk5LTlhOWEtYTIwYzk2NDM5NjAzIiwiY2xpZW50X2lkIjoiY2xpZW50SWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXX0.LkQ3KAj2kPY7yKmwXlhIFaHtt-31mJGWPb-_VpC8PWo9IBUpZQxg76WpahBJjet6O1ICx8b5Ab2CxH7ErTl0tL1jk5VZ_kp66E9E7bUQn-C09CY0fqxAan3pzpGrJsUvcR4pzyzLoRCuAqVRF5K2mdDQUZ8NaP0oXeVRuxyRdgjwMAkQGHpFC_Fk-7Hbsq2Y0GikD0UdkaH2Ey_vVyKy5aj3NrAZs62KFvQfSbifxd4uBHzUJSkiFE2Cx3u1xKs3W2q8MladwMwlQmWJROH6lDjQiybUZOEhJaktxQYGAinScnm11-9WOdaqohcr65PAQt48__rMRi0TUgvsxpz6ow"
+E:\SpringBoot\spring-microservices\oauth2>curl localhost:8090/customer/all -H "Authorization: Bearer "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTUzMjUwMDksInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiQ1VTVE9NRVJfREVMRVRFIiwiQUNDT1VOVF9VUERBVEUiLCJDVVNUT01FUl9DUkVBVEUiLCJBQ0NPVU5UX1JFQUQiLCJBQ0NPVU5UX0RFTEVURSIsIkFDQ09VTlRfQ1JFQVRFIiwiQ1VTVE9NRVJfUkVBRCIsIkNVU1RPTUVSX1VQREFURSJdLCJqdGkiOiJZL01TcUdERlVWaXBpcVh3a1hqd1owdFMrblE9IiwiY2xpZW50X2lkIjoiY2xpZW50SWQiLCJzY29wZSI6WyJyZWFkIiwid3JpdGUiXX0.d0DU1SApuBLTk-_1-7T01sYvDn2l2MyY4jyDSGnboEuRWzWr3GK8yxfU6NyS3GOdV3z-300qwuEP8aDIXmAOQ_-bFShpFbnDqRR0OlNFXs5RLj6VydA4Cg-acQ7qS22deauR4V_-pU7nI2avWSr0z2SvUDbr5hG2aNV0WrViydPIEld2-AYreqjRMgdlhQIyKRbUMNwZFIF0RzMiuOIbwoWYGTt8juPXXhXV9msqz6u1XQPBUERUvIF29SMIcwmyUbDiRufcTZR1V6vkmQReb5ECYYTb3OhZNL0Gn11ODmk_Y76IQfSzHXmw2fheqQEJ0yEeidjEoYx0bm4fMMs3_g"
 
-{
-  "authorities" : [ {
-    "authority" : "ROLE_GUEST"
-  } ],
-  "details" : {
-    "remoteAddress" : "127.0.0.1",
-    "sessionId" : null,
-    "tokenValue" : "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDgyMzcxNDEsInVzZXJfbmFtZSI6Imd1ZXN0IiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9HVUVTVCJdLCJqdGkiOiIzNDk1ODE1MC0wOGJkLTQwMDYtYmNhMC1lM2RkYjAxMGU2NjUiLCJjbGllbnRfaWQiOiJjbGllbnRJZCIsInNjb3BlIjpbInJlYWQiLCJ3cml0ZSJdfQ.WUwAh-aKgh_Bqk-a9ijw67EI6H8gFrb3D_WdwlEcITskIybhacHjT6E7cUXjdBT7GCRvvJ-yxzFJIQyI6y0t61SInpqVG2GlAwtTxR5reG0e4ZtcKoq2rbQghK8hWenGplGT31kjDY78zZv-WqCAc0-MM4cC06fTXFzdhsdueY789lCasSD4WMMC6bWbN098lHF96rMpCdlW13EalrPgcKeuvZtUBrC8ntL8Bg3LRMcU1bFKTRAwlVxw1aYyqeEN4NSxkiSgQod2dltA-b3c15L-fXoOWNGnPB68hqgK48ymuemRQTSg3eKmHFAQdDL6pxQ8_D_ZWAL3QhsKQVGDKg",
-    "tokenType" : "Bearer",
-    "decodedDetails" : null
-  },
-  "authenticated" : true,
-  "userAuthentication" : {
-    "authorities" : [ {
-      "authority" : "ROLE_GUEST"
-    } ],
-    "details" : null,
-    "authenticated" : true,
-    "principal" : "guest",
-    "credentials" : "N/A",
-    "name" : "guest"
-  },
-  "credentials" : "",
-  "principal" : "guest",
-  "clientOnly" : false,
-  "oauth2Request" : {
-    "clientId" : "clientId",
-    "scope" : [ "read", "write" ],
-    "requestParameters" : {
-      "client_id" : "clientId"
-    },
-    "resourceIds" : [ ],
-    "authorities" : [ ],
-    "approved" : true,
-    "refresh" : false,
-    "redirectUri" : null,
-    "responseTypes" : [ ],
-    "extensions" : { },
-    "grantType" : null,
-    "refreshTokenRequest" : null
-  },
-  "name" : "guest"
-}
+
+
