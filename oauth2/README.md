@@ -1,4 +1,9 @@
 
+keytool -genkey -alias tomcat -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore keystore.p12 -validity 3650
+keytool -genkeypair -alias tomcat_selfsigned -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore oaauth-ssl-key.p12 -validity 3650
+
+
+
 curl -u clientId:secret -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "grant_type=password&username=user&password=pass" localhost:9000/oauth/token
 
 

@@ -1,5 +1,4 @@
-server:
-  port: 9000
+
 
 security:
   jwt:
@@ -24,3 +23,10 @@ spring:
     show-sql: true
     properties:
       hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
+server:
+  port: 9000
+
+  ssl.key-store-password: changeit
+  ssl.key-store: ssl/resources/oaauth-ssl-key.p12
+  ssl.key-store-type: PKCS12
