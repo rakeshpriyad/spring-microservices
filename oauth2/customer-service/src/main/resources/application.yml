@@ -1,0 +1,24 @@
+server:
+  port: 8090
+
+spring:
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bnkmicroservice?allowPublicKeyRetrieval=true&useSSL=FALSE
+    username: root
+    password: root
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+#security
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+
+security:
+  jwt:
+    public-key: classpath:public.txt
+
